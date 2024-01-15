@@ -1,4 +1,4 @@
-module provider-xyz-native
+module provider-ceph-radosgw-native
 
 go 1.20
 

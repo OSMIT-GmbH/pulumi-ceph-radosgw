@@ -6,16 +6,24 @@ from . import _utilities
 import typing
 # Export this package's modules as members:
 from .provider import *
-from .random import *
+from .user import *
+
+# Make subpackages available:
+if typing.TYPE_CHECKING:
+    import pulumi_ceph_radosgw.config as __config
+    config = __config
+else:
+    config = _utilities.lazy_import('pulumi_ceph_radosgw.config')
+
 _utilities.register(
     resource_modules="""
 [
  {
-  "pkg": "xyz",
+  "pkg": "ceph-radosgw",
   "mod": "index",
-  "fqn": "pulumi_xyz",
+  "fqn": "pulumi_ceph_radosgw",
   "classes": {
-   "xyz:index:Random": "Random"
+   "ceph-radosgw:index:User": "User"
   }
  }
 ]
@@ -23,9 +31,9 @@ _utilities.register(
     resource_packages="""
 [
  {
-  "pkg": "xyz",
-  "token": "pulumi:providers:xyz",
-  "fqn": "pulumi_xyz",
+  "pkg": "ceph-radosgw",
+  "token": "pulumi:providers:ceph-radosgw",
+  "fqn": "pulumi_ceph_radosgw",
   "class": "Provider"
  }
 ]

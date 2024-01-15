@@ -1,10 +1,10 @@
-PROJECT_NAME := Pulumi Xyz Resource Provider
+PROJECT_NAME := Pulumi ceph-radosgw Resource Provider
 
-PACK             := xyz
+PACK             := ceph-radosgw
 PACKDIR          := sdk
-PROJECT          := github.com/pulumi/pulumi-xyz
-NODE_MODULE_NAME := @pulumi/xyz
-NUGET_PKG_NAME   := Pulumi.Xyz
+PROJECT          := github.com/OSMIT-GmbH/pulumi-ceph-radosgw
+NODE_MODULE_NAME := @osmit-gmbh/pulumi-ceph-radosgw
+NUGET_PKG_NAME   := OSMIT-GmbH.Pulumi-Ceph-Radosgw
 
 PROVIDER        := pulumi-resource-${PACK}
 VERSION         ?= $(shell pulumictl get version)
@@ -25,6 +25,9 @@ ensure::
 provider::
 	(cd provider && go build -o $(WORKING_DIR)/bin/${PROVIDER} -ldflags "-X ${PROJECT}/${VERSION_PATH}=${VERSION}" $(PROJECT)/${PROVIDER_PATH}/cmd/$(PROVIDER))
 
+install_provider:: provider
+	pulumi plugin install resource ceph-radosgw ${VERSION} --reinstall -f $(WORKING_DIR)/bin/${PROVIDER}
+
 provider_debug::
 	(cd provider && go build -o $(WORKING_DIR)/bin/${PROVIDER} -gcflags="all=-N -l" -ldflags "-X ${PROJECT}/${VERSION_PATH}=${VERSION}" $(PROJECT)/${PROVIDER_PATH}/cmd/$(PROVIDER))
 
@@ -42,12 +45,20 @@ dotnet_sdk::
 go_sdk:: $(WORKING_DIR)/bin/$(PROVIDER)
 	rm -rf sdk/go
 	pulumi package gen-sdk $(WORKING_DIR)/bin/$(PROVIDER) --language go
+	mv sdk/go/cephradosgw/internal sdk/go/cephradosgw/int
+	sed -i.old 's/"internal"/"int"/g' sdk/go/cephradosgw/*.go
+	sed -i.old 's/ internal\./ int./g' sdk/go/cephradosgw/*.go
+	rm sdk/go/cephradosgw/*.go.old
+	sed -i.old 's/package internal/package int/g' sdk/go/cephradosgw/int/*.go
+	rm sdk/go/cephradosgw/int/*.go.old
 
 nodejs_sdk:: VERSION := $(shell pulumictl get version --language javascript)
 nodejs_sdk::
 	rm -rf sdk/nodejs
 	pulumi package gen-sdk $(WORKING_DIR)/bin/$(PROVIDER) --language nodejs
 	cd ${PACKDIR}/nodejs/ && \
+		sed -i.bak 's!"name": "@pulumi/${PACK}"!"name": "$(NODE_MODULE_NAME)"!g' package.json && \
+		rm package.json.bak && \
 		yarn install && \
 		yarn run tsc && \
 		cp ../../README.md ../../LICENSE package.json yarn.lock bin/ && \

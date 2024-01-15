@@ -1,5 +1,5 @@
 {
-    "name": "@pulumi/xyz",
+    "name": "@osmit-gmbh/pulumi-ceph-radosgw",
     "version": "${VERSION}",
     "scripts": {
         "build": "tsc"
@@ -13,6 +13,6 @@
     },
     "pulumi": {
         "resource": true,
-        "name": "xyz"
+        "name": "ceph-radosgw"
     }
 }

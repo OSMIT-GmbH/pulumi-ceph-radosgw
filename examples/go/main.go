@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/pulumi/pulumi-xyz/sdk/go/xyz"
+	radosgw "github.com/OSMIT-GmbH/pulumi-ceph-radosgw/sdk/go/ceph-radosgw"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 func main() {
 	pulumi.Run(func(ctx *pulumi.Context) error {
-		myRandomResource, err := xyz.NewRandom(ctx, "myRandomResource", &xyz.RandomArgs{
+		myRandomResource, err := radosgw.NewRandom(ctx, "myRandomResource", &radosgw.RandomArgs{
 			Length: pulumi.Int(24),
 		})
 		if err != nil {

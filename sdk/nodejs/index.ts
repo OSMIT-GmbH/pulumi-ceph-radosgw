@@ -5,33 +5,73 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 // Export members:
+export { BucketArgs } from "./bucket";
+export type Bucket = import("./bucket").Bucket;
+export const Bucket: typeof import("./bucket").Bucket = null as any;
+utilities.lazyLoad(exports, ["Bucket"], () => require("./bucket"));
+
+export { BucketPolicyArgs } from "./bucketPolicy";
+export type BucketPolicy = import("./bucketPolicy").BucketPolicy;
+export const BucketPolicy: typeof import("./bucketPolicy").BucketPolicy = null as any;
+utilities.lazyLoad(exports, ["BucketPolicy"], () => require("./bucketPolicy"));
+
+export { KeyArgs } from "./key";
+export type Key = import("./key").Key;
+export const Key: typeof import("./key").Key = null as any;
+utilities.lazyLoad(exports, ["Key"], () => require("./key"));
+
 export { ProviderArgs } from "./provider";
 export type Provider = import("./provider").Provider;
 export const Provider: typeof import("./provider").Provider = null as any;
 utilities.lazyLoad(exports, ["Provider"], () => require("./provider"));
 
-export { RandomArgs } from "./random";
-export type Random = import("./random").Random;
-export const Random: typeof import("./random").Random = null as any;
-utilities.lazyLoad(exports, ["Random"], () => require("./random"));
+export { SubUserArgs } from "./subUser";
+export type SubUser = import("./subUser").SubUser;
+export const SubUser: typeof import("./subUser").SubUser = null as any;
+utilities.lazyLoad(exports, ["SubUser"], () => require("./subUser"));
 
+export { UserArgs } from "./user";
+export type User = import("./user").User;
+export const User: typeof import("./user").User = null as any;
+utilities.lazyLoad(exports, ["User"], () => require("./user"));
+
+
+// Export enums:
+export * from "./types/enums";
+
+// Export sub-modules:
+import * as config from "./config";
+import * as types from "./types";
+
+export {
+    config,
+    types,
+};
 
 const _module = {
     version: utilities.getVersion(),
     construct: (name: string, type: string, urn: string): pulumi.Resource => {
         switch (type) {
-            case "xyz:index:Random":
-                return new Random(name, <any>undefined, { urn })
+            case "ceph-radosgw:index:Bucket":
+                return new Bucket(name, <any>undefined, { urn })
+            case "ceph-radosgw:index:BucketPolicy":
+                return new BucketPolicy(name, <any>undefined, { urn })
+            case "ceph-radosgw:index:Key":
+                return new Key(name, <any>undefined, { urn })
+            case "ceph-radosgw:index:SubUser":
+                return new SubUser(name, <any>undefined, { urn })
+            case "ceph-radosgw:index:User":
+                return new User(name, <any>undefined, { urn })
             default:
                 throw new Error(`unknown resource type ${type}`);
         }
     },
 };
-pulumi.runtime.registerResourceModule("xyz", "index", _module)
-pulumi.runtime.registerResourcePackage("xyz", {
+pulumi.runtime.registerResourceModule("ceph-radosgw", "index", _module)
+pulumi.runtime.registerResourcePackage("ceph-radosgw", {
     version: utilities.getVersion(),
     constructProvider: (name: string, type: string, urn: string): pulumi.ProviderResource => {
-        if (type !== "pulumi:providers:xyz") {
+        if (type !== "pulumi:providers:ceph-radosgw") {
             throw new Error(`unknown provider type ${type}`);
         }
         return new Provider(name, <any>undefined, { urn });
