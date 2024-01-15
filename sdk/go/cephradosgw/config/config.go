@@ -31,6 +31,11 @@ func GetEndpoint(ctx *pulumi.Context) string {
 	return config.Get(ctx, "ceph-radosgw:endpoint")
 }
 
+// Don't validate server SSL certificate
+func GetInsecure(ctx *pulumi.Context) string {
+	return config.Get(ctx, "ceph-radosgw:insecure")
+}
+
 // The password. It is very secret.
 func GetSecretAccessKey(ctx *pulumi.Context) string {
 	return config.Get(ctx, "ceph-radosgw:secretAccessKey")

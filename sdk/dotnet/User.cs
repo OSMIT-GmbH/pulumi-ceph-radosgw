@@ -15,11 +15,23 @@ namespace Pulumi.CephRadosgw
         [Output("_assimilated")]
         public Output<bool> _assimilated { get; private set; } = null!;
 
+        [Output("capabilities")]
+        public Output<Outputs.Capabilities?> Capabilities { get; private set; } = null!;
+
         [Output("displayName")]
         public Output<string?> DisplayName { get; private set; } = null!;
 
         [Output("email")]
         public Output<string?> Email { get; private set; } = null!;
+
+        [Output("keys")]
+        public Output<ImmutableArray<Outputs.KeyEntry>> Keys { get; private set; } = null!;
+
+        [Output("maxBuckets")]
+        public Output<int?> MaxBuckets { get; private set; } = null!;
+
+        [Output("suspended")]
+        public Output<bool?> Suspended { get; private set; } = null!;
 
         [Output("userId")]
         public Output<string> UserId { get; private set; } = null!;
@@ -69,11 +81,20 @@ namespace Pulumi.CephRadosgw
 
     public sealed class UserArgs : global::Pulumi.ResourceArgs
     {
+        [Input("capabilities")]
+        public Input<Inputs.CapabilitiesArgs>? Capabilities { get; set; }
+
         [Input("displayName")]
         public Input<string>? DisplayName { get; set; }
 
         [Input("email")]
         public Input<string>? Email { get; set; }
+
+        [Input("maxBuckets")]
+        public Input<int>? MaxBuckets { get; set; }
+
+        [Input("suspended")]
+        public Input<bool>? Suspended { get; set; }
 
         [Input("userId", required: true)]
         public Input<string> UserId { get; set; } = null!;

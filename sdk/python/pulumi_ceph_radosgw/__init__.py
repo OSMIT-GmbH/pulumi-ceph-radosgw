@@ -5,8 +5,15 @@
 from . import _utilities
 import typing
 # Export this package's modules as members:
+from ._enums import *
+from .bucket import *
+from .bucket_policy import *
+from .key import *
 from .provider import *
+from .sub_user import *
 from .user import *
+from ._inputs import *
+from . import outputs
 
 # Make subpackages available:
 if typing.TYPE_CHECKING:
@@ -23,6 +30,10 @@ _utilities.register(
   "mod": "index",
   "fqn": "pulumi_ceph_radosgw",
   "classes": {
+   "ceph-radosgw:index:Bucket": "Bucket",
+   "ceph-radosgw:index:BucketPolicy": "BucketPolicy",
+   "ceph-radosgw:index:Key": "Key",
+   "ceph-radosgw:index:SubUser": "SubUser",
    "ceph-radosgw:index:User": "User"
   }
  }

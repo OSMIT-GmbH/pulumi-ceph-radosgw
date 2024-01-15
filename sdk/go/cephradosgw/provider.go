@@ -23,6 +23,8 @@ type Provider struct {
 	DeleteAssimilated pulumi.StringPtrOutput `pulumi:"deleteAssimilated"`
 	// The URI to the API
 	Endpoint pulumi.StringOutput `pulumi:"endpoint"`
+	// Don't validate server SSL certificate
+	Insecure pulumi.StringPtrOutput `pulumi:"insecure"`
 	// The password. It is very secret.
 	SecretAccessKey pulumi.StringOutput    `pulumi:"secretAccessKey"`
 	Version         pulumi.StringPtrOutput `pulumi:"version"`
@@ -69,6 +71,8 @@ type providerArgs struct {
 	DeleteAssimilated *string `pulumi:"deleteAssimilated"`
 	// The URI to the API
 	Endpoint string `pulumi:"endpoint"`
+	// Don't validate server SSL certificate
+	Insecure *string `pulumi:"insecure"`
 	// The password. It is very secret.
 	SecretAccessKey string  `pulumi:"secretAccessKey"`
 	Version         *string `pulumi:"version"`
@@ -84,6 +88,8 @@ type ProviderArgs struct {
 	DeleteAssimilated pulumi.StringPtrInput
 	// The URI to the API
 	Endpoint pulumi.StringInput
+	// Don't validate server SSL certificate
+	Insecure pulumi.StringPtrInput
 	// The password. It is very secret.
 	SecretAccessKey pulumi.StringInput
 	Version         pulumi.StringPtrInput
@@ -144,6 +150,11 @@ func (o ProviderOutput) DeleteAssimilated() pulumi.StringPtrOutput {
 // The URI to the API
 func (o ProviderOutput) Endpoint() pulumi.StringOutput {
 	return o.ApplyT(func(v *Provider) pulumi.StringOutput { return v.Endpoint }).(pulumi.StringOutput)
+}
+
+// Don't validate server SSL certificate
+func (o ProviderOutput) Insecure() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Provider) pulumi.StringPtrOutput { return v.Insecure }).(pulumi.StringPtrOutput)
 }
 
 // The password. It is very secret.

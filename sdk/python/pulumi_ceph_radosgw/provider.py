@@ -19,6 +19,7 @@ class ProviderArgs:
                  secret_access_key: pulumi.Input[str],
                  assimilate: Optional[pulumi.Input[str]] = None,
                  delete_assimilated: Optional[pulumi.Input[str]] = None,
+                 insecure: Optional[pulumi.Input[str]] = None,
                  version: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a Provider resource.
@@ -27,6 +28,7 @@ class ProviderArgs:
         :param pulumi.Input[str] secret_access_key: The password. It is very secret.
         :param pulumi.Input[str] assimilate: Assimilate an existing object during create
         :param pulumi.Input[str] delete_assimilated: Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)
+        :param pulumi.Input[str] insecure: Don't validate server SSL certificate
         """
         pulumi.set(__self__, "access_key_id", access_key_id)
         pulumi.set(__self__, "endpoint", endpoint)
@@ -35,6 +37,8 @@ class ProviderArgs:
             pulumi.set(__self__, "assimilate", assimilate)
         if delete_assimilated is not None:
             pulumi.set(__self__, "delete_assimilated", delete_assimilated)
+        if insecure is not None:
+            pulumi.set(__self__, "insecure", insecure)
         if version is not None:
             pulumi.set(__self__, "version", version)
 
@@ -100,6 +104,18 @@ class ProviderArgs:
 
     @property
     @pulumi.getter
+    def insecure(self) -> Optional[pulumi.Input[str]]:
+        """
+        Don't validate server SSL certificate
+        """
+        return pulumi.get(self, "insecure")
+
+    @insecure.setter
+    def insecure(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "insecure", value)
+
+    @property
+    @pulumi.getter
     def version(self) -> Optional[pulumi.Input[str]]:
         return pulumi.get(self, "version")
 
@@ -117,6 +133,7 @@ class Provider(pulumi.ProviderResource):
                  assimilate: Optional[pulumi.Input[str]] = None,
                  delete_assimilated: Optional[pulumi.Input[str]] = None,
                  endpoint: Optional[pulumi.Input[str]] = None,
+                 insecure: Optional[pulumi.Input[str]] = None,
                  secret_access_key: Optional[pulumi.Input[str]] = None,
                  version: Optional[pulumi.Input[str]] = None,
                  __props__=None):
@@ -128,6 +145,7 @@ class Provider(pulumi.ProviderResource):
         :param pulumi.Input[str] assimilate: Assimilate an existing object during create
         :param pulumi.Input[str] delete_assimilated: Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)
         :param pulumi.Input[str] endpoint: The URI to the API
+        :param pulumi.Input[str] insecure: Don't validate server SSL certificate
         :param pulumi.Input[str] secret_access_key: The password. It is very secret.
         """
         ...
@@ -157,6 +175,7 @@ class Provider(pulumi.ProviderResource):
                  assimilate: Optional[pulumi.Input[str]] = None,
                  delete_assimilated: Optional[pulumi.Input[str]] = None,
                  endpoint: Optional[pulumi.Input[str]] = None,
+                 insecure: Optional[pulumi.Input[str]] = None,
                  secret_access_key: Optional[pulumi.Input[str]] = None,
                  version: Optional[pulumi.Input[str]] = None,
                  __props__=None):
@@ -176,6 +195,7 @@ class Provider(pulumi.ProviderResource):
             if endpoint is None and not opts.urn:
                 raise TypeError("Missing required property 'endpoint'")
             __props__.__dict__["endpoint"] = endpoint
+            __props__.__dict__["insecure"] = insecure
             if secret_access_key is None and not opts.urn:
                 raise TypeError("Missing required property 'secret_access_key'")
             __props__.__dict__["secret_access_key"] = None if secret_access_key is None else pulumi.Output.secret(secret_access_key)
@@ -219,6 +239,14 @@ class Provider(pulumi.ProviderResource):
         The URI to the API
         """
         return pulumi.get(self, "endpoint")
+
+    @property
+    @pulumi.getter
+    def insecure(self) -> pulumi.Output[Optional[str]]:
+        """
+        Don't validate server SSL certificate
+        """
+        return pulumi.get(self, "insecure")
 
     @property
     @pulumi.getter(name="secretAccessKey")

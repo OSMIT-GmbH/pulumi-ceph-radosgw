@@ -37,6 +37,12 @@ namespace Pulumi.CephRadosgw
         public Output<string> Endpoint { get; private set; } = null!;
 
         /// <summary>
+        /// Don't validate server SSL certificate
+        /// </summary>
+        [Output("insecure")]
+        public Output<string?> Insecure { get; private set; } = null!;
+
+        /// <summary>
         /// The password. It is very secret.
         /// </summary>
         [Output("secretAccessKey")]
@@ -100,6 +106,12 @@ namespace Pulumi.CephRadosgw
         /// </summary>
         [Input("endpoint", required: true)]
         public Input<string> Endpoint { get; set; } = null!;
+
+        /// <summary>
+        /// Don't validate server SSL certificate
+        /// </summary>
+        [Input("insecure")]
+        public Input<string>? Insecure { get; set; }
 
         [Input("secretAccessKey", required: true)]
         private Input<string>? _secretAccessKey;

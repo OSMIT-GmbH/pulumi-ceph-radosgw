@@ -8,6 +8,9 @@ import pulumi
 import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
+from . import outputs
+from ._enums import *
+from ._inputs import *
 
 __all__ = ['UserArgs', 'User']
 
@@ -15,16 +18,25 @@ __all__ = ['UserArgs', 'User']
 class UserArgs:
     def __init__(__self__, *,
                  user_id: pulumi.Input[str],
+                 capabilities: Optional[pulumi.Input['CapabilitiesArgs']] = None,
                  display_name: Optional[pulumi.Input[str]] = None,
-                 email: Optional[pulumi.Input[str]] = None):
+                 email: Optional[pulumi.Input[str]] = None,
+                 max_buckets: Optional[pulumi.Input[int]] = None,
+                 suspended: Optional[pulumi.Input[bool]] = None):
         """
         The set of arguments for constructing a User resource.
         """
         pulumi.set(__self__, "user_id", user_id)
+        if capabilities is not None:
+            pulumi.set(__self__, "capabilities", capabilities)
         if display_name is not None:
             pulumi.set(__self__, "display_name", display_name)
         if email is not None:
             pulumi.set(__self__, "email", email)
+        if max_buckets is not None:
+            pulumi.set(__self__, "max_buckets", max_buckets)
+        if suspended is not None:
+            pulumi.set(__self__, "suspended", suspended)
 
     @property
     @pulumi.getter(name="userId")
@@ -34,6 +46,15 @@ class UserArgs:
     @user_id.setter
     def user_id(self, value: pulumi.Input[str]):
         pulumi.set(self, "user_id", value)
+
+    @property
+    @pulumi.getter
+    def capabilities(self) -> Optional[pulumi.Input['CapabilitiesArgs']]:
+        return pulumi.get(self, "capabilities")
+
+    @capabilities.setter
+    def capabilities(self, value: Optional[pulumi.Input['CapabilitiesArgs']]):
+        pulumi.set(self, "capabilities", value)
 
     @property
     @pulumi.getter(name="displayName")
@@ -53,14 +74,35 @@ class UserArgs:
     def email(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "email", value)
 
+    @property
+    @pulumi.getter(name="maxBuckets")
+    def max_buckets(self) -> Optional[pulumi.Input[int]]:
+        return pulumi.get(self, "max_buckets")
+
+    @max_buckets.setter
+    def max_buckets(self, value: Optional[pulumi.Input[int]]):
+        pulumi.set(self, "max_buckets", value)
+
+    @property
+    @pulumi.getter
+    def suspended(self) -> Optional[pulumi.Input[bool]]:
+        return pulumi.get(self, "suspended")
+
+    @suspended.setter
+    def suspended(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "suspended", value)
+
 
 class User(pulumi.CustomResource):
     @overload
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
+                 capabilities: Optional[pulumi.Input[pulumi.InputType['CapabilitiesArgs']]] = None,
                  display_name: Optional[pulumi.Input[str]] = None,
                  email: Optional[pulumi.Input[str]] = None,
+                 max_buckets: Optional[pulumi.Input[int]] = None,
+                 suspended: Optional[pulumi.Input[bool]] = None,
                  user_id: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
@@ -91,8 +133,11 @@ class User(pulumi.CustomResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
+                 capabilities: Optional[pulumi.Input[pulumi.InputType['CapabilitiesArgs']]] = None,
                  display_name: Optional[pulumi.Input[str]] = None,
                  email: Optional[pulumi.Input[str]] = None,
+                 max_buckets: Optional[pulumi.Input[int]] = None,
+                 suspended: Optional[pulumi.Input[bool]] = None,
                  user_id: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         opts = pulumi.ResourceOptions.merge(_utilities.get_resource_opts_defaults(), opts)
@@ -103,12 +148,16 @@ class User(pulumi.CustomResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = UserArgs.__new__(UserArgs)
 
+            __props__.__dict__["capabilities"] = capabilities
             __props__.__dict__["display_name"] = display_name
             __props__.__dict__["email"] = email
+            __props__.__dict__["max_buckets"] = max_buckets
+            __props__.__dict__["suspended"] = suspended
             if user_id is None and not opts.urn:
                 raise TypeError("Missing required property 'user_id'")
             __props__.__dict__["user_id"] = user_id
             __props__.__dict__["_assimilated"] = None
+            __props__.__dict__["keys"] = None
         super(User, __self__).__init__(
             'ceph-radosgw:index:User',
             resource_name,
@@ -132,8 +181,12 @@ class User(pulumi.CustomResource):
         __props__ = UserArgs.__new__(UserArgs)
 
         __props__.__dict__["_assimilated"] = None
+        __props__.__dict__["capabilities"] = None
         __props__.__dict__["display_name"] = None
         __props__.__dict__["email"] = None
+        __props__.__dict__["keys"] = None
+        __props__.__dict__["max_buckets"] = None
+        __props__.__dict__["suspended"] = None
         __props__.__dict__["user_id"] = None
         return User(resource_name, opts=opts, __props__=__props__)
 
@@ -141,6 +194,11 @@ class User(pulumi.CustomResource):
     @pulumi.getter
     def _assimilated(self) -> pulumi.Output[bool]:
         return pulumi.get(self, "_assimilated")
+
+    @property
+    @pulumi.getter
+    def capabilities(self) -> pulumi.Output[Optional['outputs.Capabilities']]:
+        return pulumi.get(self, "capabilities")
 
     @property
     @pulumi.getter(name="displayName")
@@ -151,6 +209,21 @@ class User(pulumi.CustomResource):
     @pulumi.getter
     def email(self) -> pulumi.Output[Optional[str]]:
         return pulumi.get(self, "email")
+
+    @property
+    @pulumi.getter
+    def keys(self) -> pulumi.Output[Sequence['outputs.KeyEntry']]:
+        return pulumi.get(self, "keys")
+
+    @property
+    @pulumi.getter(name="maxBuckets")
+    def max_buckets(self) -> pulumi.Output[Optional[int]]:
+        return pulumi.get(self, "max_buckets")
+
+    @property
+    @pulumi.getter
+    def suspended(self) -> pulumi.Output[Optional[bool]]:
+        return pulumi.get(self, "suspended")
 
     @property
     @pulumi.getter(name="userId")

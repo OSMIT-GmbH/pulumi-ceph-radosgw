@@ -44,6 +44,13 @@ class _ExportableConfig(types.ModuleType):
         return __config__.get('endpoint')
 
     @property
+    def insecure(self) -> Optional[str]:
+        """
+        Don't validate server SSL certificate
+        """
+        return __config__.get('insecure')
+
+    @property
     def secret_access_key(self) -> Optional[str]:
         """
         The password. It is very secret.

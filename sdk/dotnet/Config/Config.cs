@@ -72,6 +72,16 @@ namespace Pulumi.CephRadosgw
             set => _endpoint.Set(value);
         }
 
+        private static readonly __Value<string?> _insecure = new __Value<string?>(() => __config.Get("insecure"));
+        /// <summary>
+        /// Don't validate server SSL certificate
+        /// </summary>
+        public static string? Insecure
+        {
+            get => _insecure.Get();
+            set => _insecure.Set(value);
+        }
+
         private static readonly __Value<string?> _secretAccessKey = new __Value<string?>(() => __config.Get("secretAccessKey"));
         /// <summary>
         /// The password. It is very secret.

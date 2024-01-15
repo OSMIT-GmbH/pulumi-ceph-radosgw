@@ -29,6 +29,11 @@ endpoint: Optional[str]
 The URI to the API
 """
 
+insecure: Optional[str]
+"""
+Don't validate server SSL certificate
+"""
+
 secretAccessKey: Optional[str]
 """
 The password. It is very secret.

@@ -16,8 +16,12 @@ type User struct {
 	pulumi.CustomResourceState
 
 	_assimilated pulumi.BoolOutput      `pulumi:"_assimilated"`
+	Capabilities CapabilitiesPtrOutput  `pulumi:"capabilities"`
 	DisplayName  pulumi.StringPtrOutput `pulumi:"displayName"`
 	Email        pulumi.StringPtrOutput `pulumi:"email"`
+	Keys         KeyEntryArrayOutput    `pulumi:"keys"`
+	MaxBuckets   pulumi.IntPtrOutput    `pulumi:"maxBuckets"`
+	Suspended    pulumi.BoolPtrOutput   `pulumi:"suspended"`
 	UserId       pulumi.StringOutput    `pulumi:"userId"`
 }
 
@@ -64,16 +68,22 @@ func (UserState) ElementType() reflect.Type {
 }
 
 type userArgs struct {
-	DisplayName *string `pulumi:"displayName"`
-	Email       *string `pulumi:"email"`
-	UserId      string  `pulumi:"userId"`
+	Capabilities *Capabilities `pulumi:"capabilities"`
+	DisplayName  *string       `pulumi:"displayName"`
+	Email        *string       `pulumi:"email"`
+	MaxBuckets   *int          `pulumi:"maxBuckets"`
+	Suspended    *bool         `pulumi:"suspended"`
+	UserId       string        `pulumi:"userId"`
 }
 
 // The set of arguments for constructing a User resource.
 type UserArgs struct {
-	DisplayName pulumi.StringPtrInput
-	Email       pulumi.StringPtrInput
-	UserId      pulumi.StringInput
+	Capabilities CapabilitiesPtrInput
+	DisplayName  pulumi.StringPtrInput
+	Email        pulumi.StringPtrInput
+	MaxBuckets   pulumi.IntPtrInput
+	Suspended    pulumi.BoolPtrInput
+	UserId       pulumi.StringInput
 }
 
 func (UserArgs) ElementType() reflect.Type {
@@ -117,12 +127,28 @@ func (o UserOutput) _assimilated() pulumi.BoolOutput {
 	return o.ApplyT(func(v *User) pulumi.BoolOutput { return v._assimilated }).(pulumi.BoolOutput)
 }
 
+func (o UserOutput) Capabilities() CapabilitiesPtrOutput {
+	return o.ApplyT(func(v *User) CapabilitiesPtrOutput { return v.Capabilities }).(CapabilitiesPtrOutput)
+}
+
 func (o UserOutput) DisplayName() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *User) pulumi.StringPtrOutput { return v.DisplayName }).(pulumi.StringPtrOutput)
 }
 
 func (o UserOutput) Email() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v *User) pulumi.StringPtrOutput { return v.Email }).(pulumi.StringPtrOutput)
+}
+
+func (o UserOutput) Keys() KeyEntryArrayOutput {
+	return o.ApplyT(func(v *User) KeyEntryArrayOutput { return v.Keys }).(KeyEntryArrayOutput)
+}
+
+func (o UserOutput) MaxBuckets() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *User) pulumi.IntPtrOutput { return v.MaxBuckets }).(pulumi.IntPtrOutput)
+}
+
+func (o UserOutput) Suspended() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *User) pulumi.BoolPtrOutput { return v.Suspended }).(pulumi.BoolPtrOutput)
 }
 
 func (o UserOutput) UserId() pulumi.StringOutput {

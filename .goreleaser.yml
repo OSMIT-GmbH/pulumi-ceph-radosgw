@@ -1,0 +1,38 @@
+archives:
+- id: archive
+  name_template: "{{ .Binary }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}"
+#before:
+#  hooks:
+#  - make tfgen
+builds:
+- binary: pulumi-resource-ceph-radosgw
+  dir: provider
+  env:
+    - CGO_ENABLED=0
+  goarch:
+  - amd64
+  - arm64
+  goos:
+  - darwin
+  - windows
+  - linux
+  ignore: []
+  ldflags:
+  # The line below MUST align with the module in current provider/go.mod
+  - -X github.com/OSMIT-GmbH/pulumi-ceph-radosgw/provider/pkg/version.Version={{.Tag}}
+  main: ./cmd/pulumi-resource-ceph-radosgw/
+changelog:
+  filters:
+    exclude:
+    - Merge branch
+    - Merge pull request
+    - \Winternal\W
+    - \Wci\W
+    - \Wchore\W
+  sort: asc
+  use: git
+release:
+  disable: false
+  prerelease: auto
+snapshot:
+  name_template: "{{ .Tag }}-SNAPSHOT"
