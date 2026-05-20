@@ -21,6 +21,44 @@ __config__ = pulumi.Config('ceph-radosgw')
 
 class _ExportableConfig(types.ModuleType):
     @_builtins.property
-    def itsasecret(self) -> Optional[bool]:
-        return __config__.get_bool('itsasecret')
+    def access_key_id(self) -> Optional[str]:
+        """
+        The username. It's important but not secret.
+        """
+        return __config__.get('accessKeyID')
+
+    @_builtins.property
+    def assimilate(self) -> Optional[str]:
+        """
+        Assimilate an existing object during create
+        """
+        return __config__.get('assimilate')
+
+    @_builtins.property
+    def delete_assimilated(self) -> Optional[str]:
+        """
+        Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)
+        """
+        return __config__.get('deleteAssimilated')
+
+    @_builtins.property
+    def endpoint(self) -> Optional[str]:
+        """
+        The URI to the API
+        """
+        return __config__.get('endpoint')
+
+    @_builtins.property
+    def insecure(self) -> Optional[str]:
+        """
+        Don't validate server SSL certificate
+        """
+        return __config__.get('insecure')
+
+    @_builtins.property
+    def secret_access_key(self) -> Optional[str]:
+        """
+        The password. It is very secret.
+        """
+        return __config__.get('secretAccessKey')
 

@@ -7,10 +7,68 @@ import * as utilities from "../utilities";
 declare var exports: any;
 const __config = new pulumi.Config("ceph-radosgw");
 
-export declare const itsasecret: boolean | undefined;
-Object.defineProperty(exports, "itsasecret", {
+/**
+ * The username. It's important but not secret.
+ */
+export declare const accessKeyID: string | undefined;
+Object.defineProperty(exports, "accessKeyID", {
     get() {
-        return __config.getObject<boolean>("itsasecret");
+        return __config.get("accessKeyID");
+    },
+    enumerable: true,
+});
+
+/**
+ * Assimilate an existing object during create
+ */
+export declare const assimilate: string | undefined;
+Object.defineProperty(exports, "assimilate", {
+    get() {
+        return __config.get("assimilate");
+    },
+    enumerable: true,
+});
+
+/**
+ * Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)
+ */
+export declare const deleteAssimilated: string | undefined;
+Object.defineProperty(exports, "deleteAssimilated", {
+    get() {
+        return __config.get("deleteAssimilated");
+    },
+    enumerable: true,
+});
+
+/**
+ * The URI to the API
+ */
+export declare const endpoint: string | undefined;
+Object.defineProperty(exports, "endpoint", {
+    get() {
+        return __config.get("endpoint");
+    },
+    enumerable: true,
+});
+
+/**
+ * Don't validate server SSL certificate
+ */
+export declare const insecure: string | undefined;
+Object.defineProperty(exports, "insecure", {
+    get() {
+        return __config.get("insecure");
+    },
+    enumerable: true,
+});
+
+/**
+ * The password. It is very secret.
+ */
+export declare const secretAccessKey: string | undefined;
+Object.defineProperty(exports, "secretAccessKey", {
+    get() {
+        return __config.get("secretAccessKey");
     },
     enumerable: true,
 });

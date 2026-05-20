@@ -5,7 +5,8 @@ package com.osmitgmbh.cephradosgw;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
-import java.lang.Boolean;
+import com.pulumi.exceptions.MissingRequiredPropertyException;
+import java.lang.String;
 import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.Nullable;
@@ -15,17 +16,105 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
 
     public static final ProviderArgs Empty = new ProviderArgs();
 
-    @Import(name="itsasecret", json=true)
-    private @Nullable Output<Boolean> itsasecret;
+    /**
+     * The username. It&#39;s important but not secret.
+     * 
+     */
+    @Import(name="accessKeyID", required=true)
+    private Output<String> accessKeyID;
 
-    public Optional<Output<Boolean>> itsasecret() {
-        return Optional.ofNullable(this.itsasecret);
+    /**
+     * @return The username. It&#39;s important but not secret.
+     * 
+     */
+    public Output<String> accessKeyID() {
+        return this.accessKeyID;
+    }
+
+    /**
+     * Assimilate an existing object during create
+     * 
+     */
+    @Import(name="assimilate")
+    private @Nullable Output<String> assimilate;
+
+    /**
+     * @return Assimilate an existing object during create
+     * 
+     */
+    public Optional<Output<String>> assimilate() {
+        return Optional.ofNullable(this.assimilate);
+    }
+
+    /**
+     * Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)
+     * 
+     */
+    @Import(name="deleteAssimilated")
+    private @Nullable Output<String> deleteAssimilated;
+
+    /**
+     * @return Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)
+     * 
+     */
+    public Optional<Output<String>> deleteAssimilated() {
+        return Optional.ofNullable(this.deleteAssimilated);
+    }
+
+    /**
+     * The URI to the API
+     * 
+     */
+    @Import(name="endpoint", required=true)
+    private Output<String> endpoint;
+
+    /**
+     * @return The URI to the API
+     * 
+     */
+    public Output<String> endpoint() {
+        return this.endpoint;
+    }
+
+    /**
+     * Don&#39;t validate server SSL certificate
+     * 
+     */
+    @Import(name="insecure")
+    private @Nullable Output<String> insecure;
+
+    /**
+     * @return Don&#39;t validate server SSL certificate
+     * 
+     */
+    public Optional<Output<String>> insecure() {
+        return Optional.ofNullable(this.insecure);
+    }
+
+    /**
+     * The password. It is very secret.
+     * 
+     */
+    @Import(name="secretAccessKey", required=true)
+    private Output<String> secretAccessKey;
+
+    /**
+     * @return The password. It is very secret.
+     * 
+     */
+    public Output<String> secretAccessKey() {
+        return this.secretAccessKey;
     }
 
     private ProviderArgs() {}
 
     private ProviderArgs(ProviderArgs $) {
-        this.itsasecret = $.itsasecret;
+        this.accessKeyID = $.accessKeyID;
+        this.assimilate = $.assimilate;
+        this.deleteAssimilated = $.deleteAssimilated;
+        this.endpoint = $.endpoint;
+        this.insecure = $.insecure;
+        this.secretAccessKey = $.secretAccessKey;
     }
 
     public static Builder builder() {
@@ -46,16 +135,142 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
             $ = new ProviderArgs(Objects.requireNonNull(defaults));
         }
 
-        public Builder itsasecret(@Nullable Output<Boolean> itsasecret) {
-            $.itsasecret = itsasecret;
+        /**
+         * @param accessKeyID The username. It&#39;s important but not secret.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder accessKeyID(Output<String> accessKeyID) {
+            $.accessKeyID = accessKeyID;
             return this;
         }
 
-        public Builder itsasecret(Boolean itsasecret) {
-            return itsasecret(Output.of(itsasecret));
+        /**
+         * @param accessKeyID The username. It&#39;s important but not secret.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder accessKeyID(String accessKeyID) {
+            return accessKeyID(Output.of(accessKeyID));
+        }
+
+        /**
+         * @param assimilate Assimilate an existing object during create
+         * 
+         * @return builder
+         * 
+         */
+        public Builder assimilate(@Nullable Output<String> assimilate) {
+            $.assimilate = assimilate;
+            return this;
+        }
+
+        /**
+         * @param assimilate Assimilate an existing object during create
+         * 
+         * @return builder
+         * 
+         */
+        public Builder assimilate(String assimilate) {
+            return assimilate(Output.of(assimilate));
+        }
+
+        /**
+         * @param deleteAssimilated Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)
+         * 
+         * @return builder
+         * 
+         */
+        public Builder deleteAssimilated(@Nullable Output<String> deleteAssimilated) {
+            $.deleteAssimilated = deleteAssimilated;
+            return this;
+        }
+
+        /**
+         * @param deleteAssimilated Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)
+         * 
+         * @return builder
+         * 
+         */
+        public Builder deleteAssimilated(String deleteAssimilated) {
+            return deleteAssimilated(Output.of(deleteAssimilated));
+        }
+
+        /**
+         * @param endpoint The URI to the API
+         * 
+         * @return builder
+         * 
+         */
+        public Builder endpoint(Output<String> endpoint) {
+            $.endpoint = endpoint;
+            return this;
+        }
+
+        /**
+         * @param endpoint The URI to the API
+         * 
+         * @return builder
+         * 
+         */
+        public Builder endpoint(String endpoint) {
+            return endpoint(Output.of(endpoint));
+        }
+
+        /**
+         * @param insecure Don&#39;t validate server SSL certificate
+         * 
+         * @return builder
+         * 
+         */
+        public Builder insecure(@Nullable Output<String> insecure) {
+            $.insecure = insecure;
+            return this;
+        }
+
+        /**
+         * @param insecure Don&#39;t validate server SSL certificate
+         * 
+         * @return builder
+         * 
+         */
+        public Builder insecure(String insecure) {
+            return insecure(Output.of(insecure));
+        }
+
+        /**
+         * @param secretAccessKey The password. It is very secret.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder secretAccessKey(Output<String> secretAccessKey) {
+            $.secretAccessKey = secretAccessKey;
+            return this;
+        }
+
+        /**
+         * @param secretAccessKey The password. It is very secret.
+         * 
+         * @return builder
+         * 
+         */
+        public Builder secretAccessKey(String secretAccessKey) {
+            return secretAccessKey(Output.of(secretAccessKey));
         }
 
         public ProviderArgs build() {
+            if ($.accessKeyID == null) {
+                throw new MissingRequiredPropertyException("ProviderArgs", "accessKeyID");
+            }
+            if ($.endpoint == null) {
+                throw new MissingRequiredPropertyException("ProviderArgs", "endpoint");
+            }
+            if ($.secretAccessKey == null) {
+                throw new MissingRequiredPropertyException("ProviderArgs", "secretAccessKey");
+            }
             return $;
         }
     }

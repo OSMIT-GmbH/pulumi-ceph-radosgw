@@ -4,13 +4,52 @@
 package com.osmitgmbh.cephradosgw;
 
 import com.pulumi.core.internal.Codegen;
-import java.lang.Boolean;
+import java.lang.String;
 import java.util.Optional;
 
 public final class Config {
 
     private static final com.pulumi.Config config = com.pulumi.Config.of("ceph-radosgw");
-    public Optional<Boolean> itsasecret() {
-        return Codegen.booleanProp("itsasecret").config(config).get();
+/**
+ * The username. It&#39;s important but not secret.
+ * 
+ */
+    public String accessKeyID() {
+        return Codegen.stringProp("accessKeyID").config(config).require();
+    }
+/**
+ * Assimilate an existing object during create
+ * 
+ */
+    public Optional<String> assimilate() {
+        return Codegen.stringProp("assimilate").config(config).get();
+    }
+/**
+ * Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)
+ * 
+ */
+    public Optional<String> deleteAssimilated() {
+        return Codegen.stringProp("deleteAssimilated").config(config).get();
+    }
+/**
+ * The URI to the API
+ * 
+ */
+    public String endpoint() {
+        return Codegen.stringProp("endpoint").config(config).require();
+    }
+/**
+ * Don&#39;t validate server SSL certificate
+ * 
+ */
+    public Optional<String> insecure() {
+        return Codegen.stringProp("insecure").config(config).get();
+    }
+/**
+ * The password. It is very secret.
+ * 
+ */
+    public String secretAccessKey() {
+        return Codegen.stringProp("secretAccessKey").config(config).require();
     }
 }

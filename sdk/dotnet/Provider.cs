@@ -14,13 +14,50 @@ namespace OsmitGmbh.CephRadosgw
     public partial class Provider : global::Pulumi.ProviderResource
     {
         /// <summary>
+        /// The username. It's important but not secret.
+        /// </summary>
+        [Output("accessKeyID")]
+        public Output<string> AccessKeyID { get; private set; } = null!;
+
+        /// <summary>
+        /// Assimilate an existing object during create
+        /// </summary>
+        [Output("assimilate")]
+        public Output<string?> Assimilate { get; private set; } = null!;
+
+        /// <summary>
+        /// Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)
+        /// </summary>
+        [Output("deleteAssimilated")]
+        public Output<string?> DeleteAssimilated { get; private set; } = null!;
+
+        /// <summary>
+        /// The URI to the API
+        /// </summary>
+        [Output("endpoint")]
+        public Output<string> Endpoint { get; private set; } = null!;
+
+        /// <summary>
+        /// Don't validate server SSL certificate
+        /// </summary>
+        [Output("insecure")]
+        public Output<string?> Insecure { get; private set; } = null!;
+
+        /// <summary>
+        /// The password. It is very secret.
+        /// </summary>
+        [Output("secretAccessKey")]
+        public Output<string> SecretAccessKey { get; private set; } = null!;
+
+
+        /// <summary>
         /// Create a Provider resource with the given unique name, arguments, and options.
         /// </summary>
         ///
         /// <param name="name">The unique name of the resource</param>
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
-        public Provider(string name, ProviderArgs? args = null, CustomResourceOptions? options = null)
+        public Provider(string name, ProviderArgs args, CustomResourceOptions? options = null)
             : base("ceph-radosgw", name, args ?? new ProviderArgs(), MakeResourceOptions(options, ""))
         {
         }
@@ -30,6 +67,10 @@ namespace OsmitGmbh.CephRadosgw
             var defaultOptions = new CustomResourceOptions
             {
                 Version = Utilities.Version,
+                AdditionalSecretOutputs =
+                {
+                    "secretAccessKey",
+                },
             };
             var merged = CustomResourceOptions.Merge(defaultOptions, options);
             // Override the ID if one was specified for consistency with other language SDKs.
@@ -40,8 +81,51 @@ namespace OsmitGmbh.CephRadosgw
 
     public sealed class ProviderArgs : global::Pulumi.ResourceArgs
     {
-        [Input("itsasecret", json: true)]
-        public Input<bool>? Itsasecret { get; set; }
+        /// <summary>
+        /// The username. It's important but not secret.
+        /// </summary>
+        [Input("accessKeyID", required: true)]
+        public Input<string> AccessKeyID { get; set; } = null!;
+
+        /// <summary>
+        /// Assimilate an existing object during create
+        /// </summary>
+        [Input("assimilate")]
+        public Input<string>? Assimilate { get; set; }
+
+        /// <summary>
+        /// Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)
+        /// </summary>
+        [Input("deleteAssimilated")]
+        public Input<string>? DeleteAssimilated { get; set; }
+
+        /// <summary>
+        /// The URI to the API
+        /// </summary>
+        [Input("endpoint", required: true)]
+        public Input<string> Endpoint { get; set; } = null!;
+
+        /// <summary>
+        /// Don't validate server SSL certificate
+        /// </summary>
+        [Input("insecure")]
+        public Input<string>? Insecure { get; set; }
+
+        [Input("secretAccessKey", required: true)]
+        private Input<string>? _secretAccessKey;
+
+        /// <summary>
+        /// The password. It is very secret.
+        /// </summary>
+        public Input<string>? SecretAccessKey
+        {
+            get => _secretAccessKey;
+            set
+            {
+                var emptySecret = Output.CreateSecret(0);
+                _secretAccessKey = Output.Tuple<Input<string>?, int>(value, emptySecret).Apply(t => t.Item1);
+            }
+        }
 
         public ProviderArgs()
         {

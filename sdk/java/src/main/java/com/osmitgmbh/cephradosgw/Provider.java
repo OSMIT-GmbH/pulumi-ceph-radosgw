@@ -6,12 +6,101 @@ package com.osmitgmbh.cephradosgw;
 import com.osmitgmbh.cephradosgw.ProviderArgs;
 import com.osmitgmbh.cephradosgw.Utilities;
 import com.pulumi.core.Output;
+import com.pulumi.core.annotations.Export;
 import com.pulumi.core.annotations.ResourceType;
 import com.pulumi.core.internal.Codegen;
+import java.lang.String;
+import java.util.List;
+import java.util.Optional;
 import javax.annotation.Nullable;
 
 @ResourceType(type="pulumi:providers:ceph-radosgw")
 public class Provider extends com.pulumi.resources.ProviderResource {
+    /**
+     * The username. It&#39;s important but not secret.
+     * 
+     */
+    @Export(name="accessKeyID", refs={String.class}, tree="[0]")
+    private Output<String> accessKeyID;
+
+    /**
+     * @return The username. It&#39;s important but not secret.
+     * 
+     */
+    public Output<String> accessKeyID() {
+        return this.accessKeyID;
+    }
+    /**
+     * Assimilate an existing object during create
+     * 
+     */
+    @Export(name="assimilate", refs={String.class}, tree="[0]")
+    private Output</* @Nullable */ String> assimilate;
+
+    /**
+     * @return Assimilate an existing object during create
+     * 
+     */
+    public Output<Optional<String>> assimilate() {
+        return Codegen.optional(this.assimilate);
+    }
+    /**
+     * Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)
+     * 
+     */
+    @Export(name="deleteAssimilated", refs={String.class}, tree="[0]")
+    private Output</* @Nullable */ String> deleteAssimilated;
+
+    /**
+     * @return Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)
+     * 
+     */
+    public Output<Optional<String>> deleteAssimilated() {
+        return Codegen.optional(this.deleteAssimilated);
+    }
+    /**
+     * The URI to the API
+     * 
+     */
+    @Export(name="endpoint", refs={String.class}, tree="[0]")
+    private Output<String> endpoint;
+
+    /**
+     * @return The URI to the API
+     * 
+     */
+    public Output<String> endpoint() {
+        return this.endpoint;
+    }
+    /**
+     * Don&#39;t validate server SSL certificate
+     * 
+     */
+    @Export(name="insecure", refs={String.class}, tree="[0]")
+    private Output</* @Nullable */ String> insecure;
+
+    /**
+     * @return Don&#39;t validate server SSL certificate
+     * 
+     */
+    public Output<Optional<String>> insecure() {
+        return Codegen.optional(this.insecure);
+    }
+    /**
+     * The password. It is very secret.
+     * 
+     */
+    @Export(name="secretAccessKey", refs={String.class}, tree="[0]")
+    private Output<String> secretAccessKey;
+
+    /**
+     * @return The password. It is very secret.
+     * 
+     */
+    public Output<String> secretAccessKey() {
+        return this.secretAccessKey;
+    }
+
     /**
      *
      * @param name The _unique_ name of the resulting resource.
@@ -24,7 +113,7 @@ public class Provider extends com.pulumi.resources.ProviderResource {
      * @param name The _unique_ name of the resulting resource.
      * @param args The arguments to use to populate this resource's properties.
      */
-    public Provider(java.lang.String name, @Nullable ProviderArgs args) {
+    public Provider(java.lang.String name, ProviderArgs args) {
         this(name, args, null);
     }
     /**
@@ -33,11 +122,11 @@ public class Provider extends com.pulumi.resources.ProviderResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param options A bag of options that control this resource's behavior.
      */
-    public Provider(java.lang.String name, @Nullable ProviderArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+    public Provider(java.lang.String name, ProviderArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
         super("ceph-radosgw", name, makeArgs(args, options), makeResourceOptions(options, Codegen.empty()), false);
     }
 
-    private static ProviderArgs makeArgs(@Nullable ProviderArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+    private static ProviderArgs makeArgs(ProviderArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
         if (options != null && options.getUrn().isPresent()) {
             return null;
         }
@@ -47,6 +136,9 @@ public class Provider extends com.pulumi.resources.ProviderResource {
     private static com.pulumi.resources.CustomResourceOptions makeResourceOptions(@Nullable com.pulumi.resources.CustomResourceOptions options, @Nullable Output<java.lang.String> id) {
         var defaultOptions = com.pulumi.resources.CustomResourceOptions.builder()
             .version(Utilities.getVersion())
+            .additionalSecretOutputs(List.of(
+                "secretAccessKey"
+            ))
             .build();
         return com.pulumi.resources.CustomResourceOptions.merge(defaultOptions, options, id);
     }

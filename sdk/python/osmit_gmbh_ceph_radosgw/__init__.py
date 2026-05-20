@@ -6,9 +6,15 @@ import builtins as _builtins
 from . import _utilities
 import typing
 # Export this package's modules as members:
+from ._enums import *
+from .bucket import *
+from .bucket_policy import *
+from .key import *
 from .provider import *
-from .random import *
-from .random_component import *
+from .sub_user import *
+from .user import *
+from ._inputs import *
+from . import outputs
 
 # Make subpackages available:
 if typing.TYPE_CHECKING:
@@ -25,8 +31,11 @@ _utilities.register(
   "mod": "index",
   "fqn": "osmit_gmbh_ceph_radosgw",
   "classes": {
-   "ceph-radosgw:index:Random": "Random",
-   "ceph-radosgw:index:RandomComponent": "RandomComponent"
+   "ceph-radosgw:index:Bucket": "Bucket",
+   "ceph-radosgw:index:BucketPolicy": "BucketPolicy",
+   "ceph-radosgw:index:Key": "Key",
+   "ceph-radosgw:index:SubUser": "SubUser",
+   "ceph-radosgw:index:User": "User"
   }
  }
 ]

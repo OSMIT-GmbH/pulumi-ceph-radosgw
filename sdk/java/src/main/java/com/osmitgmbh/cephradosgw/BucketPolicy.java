@@ -3,44 +3,59 @@
 
 package com.osmitgmbh.cephradosgw;
 
-import com.osmitgmbh.cephradosgw.RandomArgs;
+import com.osmitgmbh.cephradosgw.BucketPolicyArgs;
 import com.osmitgmbh.cephradosgw.Utilities;
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Export;
 import com.pulumi.core.annotations.ResourceType;
 import com.pulumi.core.internal.Codegen;
-import java.lang.Integer;
 import java.lang.String;
 import javax.annotation.Nullable;
 
-@ResourceType(type="ceph-radosgw:index:Random")
-public class Random extends com.pulumi.resources.CustomResource {
-    @Export(name="length", refs={Integer.class}, tree="[0]")
-    private Output<Integer> length;
+@ResourceType(type="ceph-radosgw:index:BucketPolicy")
+public class BucketPolicy extends com.pulumi.resources.CustomResource {
+    /**
+     * Bucket name
+     * 
+     */
+    @Export(name="bucket", refs={String.class}, tree="[0]")
+    private Output<String> bucket;
 
-    public Output<Integer> length() {
-        return this.length;
+    /**
+     * @return Bucket name
+     * 
+     */
+    public Output<String> bucket() {
+        return this.bucket;
     }
-    @Export(name="result", refs={String.class}, tree="[0]")
-    private Output<String> result;
+    /**
+     * Bucket policy
+     * 
+     */
+    @Export(name="policy", refs={String.class}, tree="[0]")
+    private Output<String> policy;
 
-    public Output<String> result() {
-        return this.result;
+    /**
+     * @return Bucket policy
+     * 
+     */
+    public Output<String> policy() {
+        return this.policy;
     }
 
     /**
      *
      * @param name The _unique_ name of the resulting resource.
      */
-    public Random(java.lang.String name) {
-        this(name, RandomArgs.Empty);
+    public BucketPolicy(java.lang.String name) {
+        this(name, BucketPolicyArgs.Empty);
     }
     /**
      *
      * @param name The _unique_ name of the resulting resource.
      * @param args The arguments to use to populate this resource's properties.
      */
-    public Random(java.lang.String name, RandomArgs args) {
+    public BucketPolicy(java.lang.String name, BucketPolicyArgs args) {
         this(name, args, null);
     }
     /**
@@ -49,19 +64,19 @@ public class Random extends com.pulumi.resources.CustomResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param options A bag of options that control this resource's behavior.
      */
-    public Random(java.lang.String name, RandomArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
-        super("ceph-radosgw:index:Random", name, makeArgs(args, options), makeResourceOptions(options, Codegen.empty()), false);
+    public BucketPolicy(java.lang.String name, BucketPolicyArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+        super("ceph-radosgw:index:BucketPolicy", name, makeArgs(args, options), makeResourceOptions(options, Codegen.empty()), false);
     }
 
-    private Random(java.lang.String name, Output<java.lang.String> id, @Nullable com.pulumi.resources.CustomResourceOptions options) {
-        super("ceph-radosgw:index:Random", name, null, makeResourceOptions(options, id), false);
+    private BucketPolicy(java.lang.String name, Output<java.lang.String> id, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+        super("ceph-radosgw:index:BucketPolicy", name, null, makeResourceOptions(options, id), false);
     }
 
-    private static RandomArgs makeArgs(RandomArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+    private static BucketPolicyArgs makeArgs(BucketPolicyArgs args, @Nullable com.pulumi.resources.CustomResourceOptions options) {
         if (options != null && options.getUrn().isPresent()) {
             return null;
         }
-        return args == null ? RandomArgs.Empty : args;
+        return args == null ? BucketPolicyArgs.Empty : args;
     }
 
     private static com.pulumi.resources.CustomResourceOptions makeResourceOptions(@Nullable com.pulumi.resources.CustomResourceOptions options, @Nullable Output<java.lang.String> id) {
@@ -79,7 +94,7 @@ public class Random extends com.pulumi.resources.CustomResource {
      * @param id The _unique_ provider ID of the resource to lookup.
      * @param options Optional settings to control the behavior of the CustomResource.
      */
-    public static Random get(java.lang.String name, Output<java.lang.String> id, @Nullable com.pulumi.resources.CustomResourceOptions options) {
-        return new Random(name, id, options);
+    public static BucketPolicy get(java.lang.String name, Output<java.lang.String> id, @Nullable com.pulumi.resources.CustomResourceOptions options) {
+        return new BucketPolicy(name, id, options);
     }
 }

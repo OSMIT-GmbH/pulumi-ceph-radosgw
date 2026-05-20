@@ -32,11 +32,64 @@ namespace OsmitGmbh.CephRadosgw
 
         private static readonly global::Pulumi.Config __config = new global::Pulumi.Config("ceph-radosgw");
 
-        private static readonly __Value<bool?> _itsasecret = new __Value<bool?>(() => __config.GetBoolean("itsasecret"));
-        public static bool? Itsasecret
+        private static readonly __Value<string?> _accessKeyID = new __Value<string?>(() => __config.Get("accessKeyID"));
+        /// <summary>
+        /// The username. It's important but not secret.
+        /// </summary>
+        public static string? AccessKeyID
         {
-            get => _itsasecret.Get();
-            set => _itsasecret.Set(value);
+            get => _accessKeyID.Get();
+            set => _accessKeyID.Set(value);
+        }
+
+        private static readonly __Value<string?> _assimilate = new __Value<string?>(() => __config.Get("assimilate"));
+        /// <summary>
+        /// Assimilate an existing object during create
+        /// </summary>
+        public static string? Assimilate
+        {
+            get => _assimilate.Get();
+            set => _assimilate.Set(value);
+        }
+
+        private static readonly __Value<string?> _deleteAssimilated = new __Value<string?>(() => __config.Get("deleteAssimilated"));
+        /// <summary>
+        /// Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)
+        /// </summary>
+        public static string? DeleteAssimilated
+        {
+            get => _deleteAssimilated.Get();
+            set => _deleteAssimilated.Set(value);
+        }
+
+        private static readonly __Value<string?> _endpoint = new __Value<string?>(() => __config.Get("endpoint"));
+        /// <summary>
+        /// The URI to the API
+        /// </summary>
+        public static string? Endpoint
+        {
+            get => _endpoint.Get();
+            set => _endpoint.Set(value);
+        }
+
+        private static readonly __Value<string?> _insecure = new __Value<string?>(() => __config.Get("insecure"));
+        /// <summary>
+        /// Don't validate server SSL certificate
+        /// </summary>
+        public static string? Insecure
+        {
+            get => _insecure.Get();
+            set => _insecure.Set(value);
+        }
+
+        private static readonly __Value<string?> _secretAccessKey = new __Value<string?>(() => __config.Get("secretAccessKey"));
+        /// <summary>
+        /// The password. It is very secret.
+        /// </summary>
+        public static string? SecretAccessKey
+        {
+            get => _secretAccessKey.Get();
+            set => _secretAccessKey.Set(value);
         }
 
     }

@@ -21,10 +21,16 @@ func (m *module) Version() semver.Version {
 
 func (m *module) Construct(ctx *pulumi.Context, name, typ, urn string) (r pulumi.Resource, err error) {
 	switch typ {
-	case "ceph-radosgw:index:Random":
-		r = &Random{}
-	case "ceph-radosgw:index:RandomComponent":
-		r = &RandomComponent{}
+	case "ceph-radosgw:index:Bucket":
+		r = &Bucket{}
+	case "ceph-radosgw:index:BucketPolicy":
+		r = &BucketPolicy{}
+	case "ceph-radosgw:index:Key":
+		r = &Key{}
+	case "ceph-radosgw:index:SubUser":
+		r = &SubUser{}
+	case "ceph-radosgw:index:User":
+		r = &User{}
 	default:
 		return nil, fmt.Errorf("unknown resource type: %s", typ)
 	}

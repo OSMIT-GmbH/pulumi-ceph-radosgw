@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package provider implements a simple random resource and component.
 package provider
 
 import (
@@ -38,9 +37,15 @@ func Provider() p.Provider {
 		WithNamespace("osmit-gmbh").
 		WithGoImportPath("github.com/OSMIT-GmbH/pulumi-ceph-radosgw/sdk/go/pulumi-ceph-radosgw").
 		WithRepository("https://github.com/OSMIT-GmbH/pulumi-ceph-radosgw").
-		WithResources(infer.Resource(Random{})).
-		WithComponents(infer.ComponentF(NewRandomComponent)).
-		WithConfig(infer.Config(&Config{})).
+		WithResources(
+			infer.Resource[*Bucket, BucketArgs, BucketState](&Bucket{}),
+			infer.Resource[*BucketPolicy, BucketPolicyArgs, BucketPolicyState](&BucketPolicy{}),
+			infer.Resource[*SubUser, SubUserArgs, SubUserState](&SubUser{}),
+			infer.Resource[*User, UserArgs, UserState](&User{}),
+			infer.Resource[*Key, KeyArgs, KeyState](&Key{}),
+		).
+		// WithComponents(infer.ComponentF(NewRandomComponent)).
+		WithConfig(infer.Config(&ProviderConfig{})).
 		WithModuleMap(map[tokens.ModuleName]tokens.ModuleName{
 			"provider": "index",
 		}).Build()
@@ -50,7 +55,3 @@ func Provider() p.Provider {
 	return p
 }
 
-// Config defines provider-level configuration
-type Config struct {
-	Scream *bool `pulumi:"itsasecret,optional"`
-}

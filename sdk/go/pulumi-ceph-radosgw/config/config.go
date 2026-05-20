@@ -11,6 +11,32 @@ import (
 
 var _ = internal.GetEnvOrDefault
 
-func GetItsasecret(ctx *pulumi.Context) bool {
-	return config.GetBool(ctx, "ceph-radosgw:itsasecret")
+// The username. It's important but not secret.
+func GetAccessKeyID(ctx *pulumi.Context) string {
+	return config.Get(ctx, "ceph-radosgw:accessKeyID")
+}
+
+// Assimilate an existing object during create
+func GetAssimilate(ctx *pulumi.Context) string {
+	return config.Get(ctx, "ceph-radosgw:assimilate")
+}
+
+// Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)
+func GetDeleteAssimilated(ctx *pulumi.Context) string {
+	return config.Get(ctx, "ceph-radosgw:deleteAssimilated")
+}
+
+// The URI to the API
+func GetEndpoint(ctx *pulumi.Context) string {
+	return config.Get(ctx, "ceph-radosgw:endpoint")
+}
+
+// Don't validate server SSL certificate
+func GetInsecure(ctx *pulumi.Context) string {
+	return config.Get(ctx, "ceph-radosgw:insecure")
+}
+
+// The password. It is very secret.
+func GetSecretAccessKey(ctx *pulumi.Context) string {
+	return config.Get(ctx, "ceph-radosgw:secretAccessKey")
 }

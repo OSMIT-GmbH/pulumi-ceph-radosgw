@@ -19,6 +19,30 @@ export class Provider extends pulumi.ProviderResource {
         return obj['__pulumiType'] === "pulumi:providers:" + Provider.__pulumiType;
     }
 
+    /**
+     * The username. It's important but not secret.
+     */
+    declare public readonly accessKeyID: pulumi.Output<string>;
+    /**
+     * Assimilate an existing object during create
+     */
+    declare public readonly assimilate: pulumi.Output<string | undefined>;
+    /**
+     * Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)
+     */
+    declare public readonly deleteAssimilated: pulumi.Output<string | undefined>;
+    /**
+     * The URI to the API
+     */
+    declare public readonly endpoint: pulumi.Output<string>;
+    /**
+     * Don't validate server SSL certificate
+     */
+    declare public readonly insecure: pulumi.Output<string | undefined>;
+    /**
+     * The password. It is very secret.
+     */
+    declare public readonly secretAccessKey: pulumi.Output<string>;
 
     /**
      * Create a Provider resource with the given unique name, arguments, and options.
@@ -27,13 +51,29 @@ export class Provider extends pulumi.ProviderResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param opts A bag of options that control this resource's behavior.
      */
-    constructor(name: string, args?: ProviderArgs, opts?: pulumi.ResourceOptions) {
+    constructor(name: string, args: ProviderArgs, opts?: pulumi.ResourceOptions) {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         {
-            resourceInputs["itsasecret"] = pulumi.output(args?.itsasecret).apply(JSON.stringify);
+            if (args?.accessKeyID === undefined && !opts.urn) {
+                throw new Error("Missing required property 'accessKeyID'");
+            }
+            if (args?.endpoint === undefined && !opts.urn) {
+                throw new Error("Missing required property 'endpoint'");
+            }
+            if (args?.secretAccessKey === undefined && !opts.urn) {
+                throw new Error("Missing required property 'secretAccessKey'");
+            }
+            resourceInputs["accessKeyID"] = args?.accessKeyID;
+            resourceInputs["assimilate"] = args?.assimilate;
+            resourceInputs["deleteAssimilated"] = args?.deleteAssimilated;
+            resourceInputs["endpoint"] = args?.endpoint;
+            resourceInputs["insecure"] = args?.insecure;
+            resourceInputs["secretAccessKey"] = args?.secretAccessKey ? pulumi.secret(args.secretAccessKey) : undefined;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
+        const secretOpts = { additionalSecretOutputs: ["secretAccessKey"] };
+        opts = pulumi.mergeOptions(opts, secretOpts);
         super(Provider.__pulumiType, name, resourceInputs, opts);
     }
 }
@@ -42,5 +82,28 @@ export class Provider extends pulumi.ProviderResource {
  * The set of arguments for constructing a Provider resource.
  */
 export interface ProviderArgs {
-    itsasecret?: pulumi.Input<boolean | undefined>;
+    /**
+     * The username. It's important but not secret.
+     */
+    accessKeyID: pulumi.Input<string>;
+    /**
+     * Assimilate an existing object during create
+     */
+    assimilate?: pulumi.Input<string | undefined>;
+    /**
+     * Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)
+     */
+    deleteAssimilated?: pulumi.Input<string | undefined>;
+    /**
+     * The URI to the API
+     */
+    endpoint: pulumi.Input<string>;
+    /**
+     * Don't validate server SSL certificate
+     */
+    insecure?: pulumi.Input<string | undefined>;
+    /**
+     * The password. It is very secret.
+     */
+    secretAccessKey: pulumi.Input<string>;
 }

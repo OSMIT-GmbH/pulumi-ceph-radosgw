@@ -14,5 +14,33 @@ else:
     from typing_extensions import NotRequired, TypedDict, TypeAlias
 from .. import _utilities
 
-itsasecret: Optional[bool]
+accessKeyID: Optional[str]
+"""
+The username. It's important but not secret.
+"""
+
+assimilate: Optional[str]
+"""
+Assimilate an existing object during create
+"""
+
+deleteAssimilated: Optional[str]
+"""
+Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)
+"""
+
+endpoint: Optional[str]
+"""
+The URI to the API
+"""
+
+insecure: Optional[str]
+"""
+Don't validate server SSL certificate
+"""
+
+secretAccessKey: Optional[str]
+"""
+The password. It is very secret.
+"""
 

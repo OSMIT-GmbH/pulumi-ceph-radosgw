@@ -26,68 +26,540 @@
   },
   "config": {
     "variables": {
-      "itsasecret": {
-        "type": "boolean"
+      "accessKeyID": {
+        "type": "string",
+        "description": "The username. It's important but not secret."
+      },
+      "assimilate": {
+        "type": "string",
+        "description": "Assimilate an existing object during create"
+      },
+      "deleteAssimilated": {
+        "type": "string",
+        "description": "Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)"
+      },
+      "endpoint": {
+        "type": "string",
+        "description": "The URI to the API"
+      },
+      "insecure": {
+        "type": "string",
+        "description": "Don't validate server SSL certificate"
+      },
+      "secretAccessKey": {
+        "type": "string",
+        "description": "The password. It is very secret.",
+        "secret": true
       }
+    },
+    "defaults": [
+      "accessKeyID",
+      "secretAccessKey",
+      "endpoint"
+    ]
+  },
+  "types": {
+    "ceph-radosgw:index:Capabilities": {
+      "properties": {
+        "amzCache": {
+          "$ref": "#/types/ceph-radosgw:index:CapabilityPermission"
+        },
+        "bilog": {
+          "$ref": "#/types/ceph-radosgw:index:CapabilityPermission"
+        },
+        "buckets": {
+          "$ref": "#/types/ceph-radosgw:index:CapabilityPermission"
+        },
+        "datalog": {
+          "$ref": "#/types/ceph-radosgw:index:CapabilityPermission"
+        },
+        "info": {
+          "$ref": "#/types/ceph-radosgw:index:CapabilityPermission"
+        },
+        "mdlog": {
+          "$ref": "#/types/ceph-radosgw:index:CapabilityPermission"
+        },
+        "metadata": {
+          "$ref": "#/types/ceph-radosgw:index:CapabilityPermission"
+        },
+        "oidcProvider": {
+          "$ref": "#/types/ceph-radosgw:index:CapabilityPermission"
+        },
+        "ratelimit": {
+          "$ref": "#/types/ceph-radosgw:index:CapabilityPermission"
+        },
+        "roles": {
+          "$ref": "#/types/ceph-radosgw:index:CapabilityPermission"
+        },
+        "usage": {
+          "$ref": "#/types/ceph-radosgw:index:CapabilityPermission"
+        },
+        "userPolicy": {
+          "$ref": "#/types/ceph-radosgw:index:CapabilityPermission"
+        },
+        "users": {
+          "$ref": "#/types/ceph-radosgw:index:CapabilityPermission"
+        },
+        "zone": {
+          "$ref": "#/types/ceph-radosgw:index:CapabilityPermission"
+        }
+      },
+      "type": "object"
+    },
+    "ceph-radosgw:index:CapabilityPermission": {
+      "type": "string",
+      "enum": [
+        {
+          "name": "read",
+          "value": "read"
+        },
+        {
+          "name": "write",
+          "value": "write"
+        },
+        {
+          "name": "*",
+          "value": "*"
+        }
+      ]
+    },
+    "ceph-radosgw:index:KeyEntry": {
+      "properties": {
+        "accessKey": {
+          "type": "string"
+        },
+        "keyType": {
+          "type": "string"
+        },
+        "secretKey": {
+          "type": "string",
+          "secret": true
+        }
+      },
+      "type": "object",
+      "required": [
+        "secretKey",
+        "keyType"
+      ]
+    },
+    "ceph-radosgw:index:KeyType": {
+      "type": "string",
+      "enum": [
+        {
+          "name": "s3",
+          "value": "s3"
+        },
+        {
+          "name": "swift",
+          "value": "swift"
+        }
+      ]
+    },
+    "ceph-radosgw:index:QuotaArgs": {
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable or disable quota enforcement quota"
+        },
+        "maxObjects": {
+          "type": "integer",
+          "description": "Maximum object count - numeric value (alternate to MaxObjectsHum)"
+        },
+        "maxObjectsHum": {
+          "type": "string",
+          "description": "Maximum object count - human readable format (i.e. 10k) (alternate to MaxObjects)"
+        },
+        "maxSize": {
+          "type": "integer",
+          "description": "Maximum size - numeric value (alternate to MaxSizeHum)"
+        },
+        "maxSizeHum": {
+          "type": "string",
+          "description": "Maximum size - human readable format (alternate to MaxSize)"
+        }
+      },
+      "type": "object"
+    },
+    "ceph-radosgw:index:SubUserPermission": {
+      "type": "string",
+      "enum": [
+        {
+          "name": "none",
+          "value": "none"
+        },
+        {
+          "name": "read",
+          "value": "read"
+        },
+        {
+          "name": "write",
+          "value": "write"
+        },
+        {
+          "name": "readWrite",
+          "value": "readWrite"
+        },
+        {
+          "name": "fullControl",
+          "value": "fullControl"
+        }
+      ]
     }
   },
   "provider": {
     "properties": {
-      "itsasecret": {
-        "type": "boolean"
+      "accessKeyID": {
+        "type": "string",
+        "description": "The username. It's important but not secret."
+      },
+      "assimilate": {
+        "type": "string",
+        "description": "Assimilate an existing object during create"
+      },
+      "deleteAssimilated": {
+        "type": "string",
+        "description": "Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)"
+      },
+      "endpoint": {
+        "type": "string",
+        "description": "The URI to the API"
+      },
+      "insecure": {
+        "type": "string",
+        "description": "Don't validate server SSL certificate"
+      },
+      "secretAccessKey": {
+        "type": "string",
+        "description": "The password. It is very secret.",
+        "secret": true
       }
     },
+    "required": [
+      "accessKeyID",
+      "secretAccessKey",
+      "endpoint"
+    ],
     "inputProperties": {
-      "itsasecret": {
-        "type": "boolean"
+      "accessKeyID": {
+        "type": "string",
+        "description": "The username. It's important but not secret."
+      },
+      "assimilate": {
+        "type": "string",
+        "description": "Assimilate an existing object during create"
+      },
+      "deleteAssimilated": {
+        "type": "string",
+        "description": "Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)"
+      },
+      "endpoint": {
+        "type": "string",
+        "description": "The URI to the API"
+      },
+      "insecure": {
+        "type": "string",
+        "description": "Don't validate server SSL certificate"
+      },
+      "secretAccessKey": {
+        "type": "string",
+        "description": "The password. It is very secret.",
+        "secret": true
       }
-    }
+    },
+    "requiredInputs": [
+      "accessKeyID",
+      "secretAccessKey",
+      "endpoint"
+    ]
   },
   "resources": {
-    "ceph-radosgw:index:Random": {
+    "ceph-radosgw:index:Bucket": {
       "properties": {
-        "length": {
-          "type": "integer"
+        "_assimilated": {
+          "type": "boolean",
+          "description": "Bucket was 'assimilated' - managing an existing bucket."
         },
-        "result": {
+        "_location": {
           "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "description": "Bucket name"
+        },
+        "objectLocking": {
+          "type": "boolean",
+          "description": "Bucket object locking enabled"
+        },
+        "purgeOnDelete": {
+          "type": "boolean",
+          "description": "Purge bucket on delete."
+        },
+        "quota": {
+          "$ref": "#/types/ceph-radosgw:index:QuotaArgs",
+          "description": "Bucket quota configuration"
+        },
+        "ubid": {
+          "type": "string",
+          "description": "The unique bucket id."
+        },
+        "versioning": {
+          "type": "boolean"
         }
       },
       "required": [
-        "length",
-        "result"
+        "name",
+        "ubid",
+        "_assimilated",
+        "_location"
       ],
       "inputProperties": {
-        "length": {
-          "type": "integer"
+        "name": {
+          "type": "string",
+          "description": "Bucket name"
+        },
+        "objectLocking": {
+          "type": "boolean",
+          "description": "Bucket object locking enabled"
+        },
+        "purgeOnDelete": {
+          "type": "boolean",
+          "description": "Purge bucket on delete"
+        },
+        "quota": {
+          "$ref": "#/types/ceph-radosgw:index:QuotaArgs",
+          "description": "Bucket quota configuration"
+        },
+        "versioning": {
+          "type": "boolean"
         }
       },
       "requiredInputs": [
-        "length"
+        "name"
       ]
     },
-    "ceph-radosgw:index:RandomComponent": {
+    "ceph-radosgw:index:BucketPolicy": {
       "properties": {
-        "length": {
+        "bucket": {
+          "type": "string",
+          "description": "Bucket name"
+        },
+        "policy": {
+          "type": "string",
+          "description": "Bucket policy"
+        }
+      },
+      "required": [
+        "bucket",
+        "policy"
+      ],
+      "inputProperties": {
+        "bucket": {
+          "type": "string",
+          "description": "Bucket name"
+        },
+        "policy": {
+          "type": "string",
+          "description": "Bucket policy"
+        }
+      },
+      "requiredInputs": [
+        "bucket",
+        "policy"
+      ]
+    },
+    "ceph-radosgw:index:Key": {
+      "properties": {
+        "_assimilated": {
+          "type": "boolean"
+        },
+        "accessKey": {
+          "type": "string",
+          "description": "The access key"
+        },
+        "keyType": {
+          "type": "string",
+          "description": "key type - either 's3' or 'swift'"
+        },
+        "secretKey": {
+          "type": "string",
+          "description": "The secret key"
+        },
+        "subUserName": {
+          "type": "string",
+          "description": "Name of sub-user (optional)"
+        },
+        "userId": {
+          "type": "string",
+          "description": "User-ID of 'parent' user"
+        }
+      },
+      "required": [
+        "userId",
+        "_assimilated"
+      ],
+      "inputProperties": {
+        "accessKey": {
+          "type": "string",
+          "description": "The access key"
+        },
+        "keyType": {
+          "type": "string",
+          "description": "key type - either 's3' or 'swift'"
+        },
+        "secretKey": {
+          "type": "string",
+          "description": "The secret key"
+        },
+        "subUserName": {
+          "type": "string",
+          "description": "Name of sub-user (optional)"
+        },
+        "userId": {
+          "type": "string",
+          "description": "User-ID of 'parent' user"
+        }
+      },
+      "requiredInputs": [
+        "userId"
+      ]
+    },
+    "ceph-radosgw:index:SubUser": {
+      "properties": {
+        "_assimilated": {
+          "type": "boolean"
+        },
+        "fullname": {
+          "type": "string"
+        },
+        "generateKey": {
+          "type": "boolean"
+        },
+        "keyType": {
+          "$ref": "#/types/ceph-radosgw:index:KeyType"
+        },
+        "keys": {
+          "type": "array",
+          "items": {
+            "$ref": "#/types/ceph-radosgw:index:KeyEntry"
+          }
+        },
+        "permissions": {
+          "$ref": "#/types/ceph-radosgw:index:SubUserPermission"
+        },
+        "purgeKeys": {
+          "type": "boolean"
+        },
+        "secretKey": {
+          "type": "string",
+          "secret": true
+        },
+        "subUserName": {
+          "type": "string",
+          "description": "Name of this subuser"
+        },
+        "userId": {
+          "type": "string",
+          "description": "User-ID of 'parent' user"
+        }
+      },
+      "required": [
+        "userId",
+        "subUserName",
+        "permissions",
+        "fullname",
+        "keys",
+        "_assimilated"
+      ],
+      "inputProperties": {
+        "generateKey": {
+          "type": "boolean"
+        },
+        "keyType": {
+          "$ref": "#/types/ceph-radosgw:index:KeyType"
+        },
+        "permissions": {
+          "$ref": "#/types/ceph-radosgw:index:SubUserPermission"
+        },
+        "purgeKeys": {
+          "type": "boolean"
+        },
+        "secretKey": {
+          "type": "string",
+          "secret": true
+        },
+        "subUserName": {
+          "type": "string",
+          "description": "Name of this subuser"
+        },
+        "userId": {
+          "type": "string",
+          "description": "User-ID of 'parent' user"
+        }
+      },
+      "requiredInputs": [
+        "userId",
+        "subUserName",
+        "permissions"
+      ]
+    },
+    "ceph-radosgw:index:User": {
+      "properties": {
+        "_assimilated": {
+          "type": "boolean"
+        },
+        "capabilities": {
+          "$ref": "#/types/ceph-radosgw:index:Capabilities"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "keys": {
+          "type": "array",
+          "items": {
+            "$ref": "#/types/ceph-radosgw:index:KeyEntry"
+          }
+        },
+        "maxBuckets": {
           "type": "integer"
         },
-        "password": {
+        "suspended": {
+          "type": "boolean"
+        },
+        "userId": {
           "type": "string"
         }
       },
       "required": [
-        "length",
-        "password"
+        "userId",
+        "keys",
+        "_assimilated"
       ],
       "inputProperties": {
-        "length": {
+        "capabilities": {
+          "$ref": "#/types/ceph-radosgw:index:Capabilities"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "maxBuckets": {
           "type": "integer"
+        },
+        "suspended": {
+          "type": "boolean"
+        },
+        "userId": {
+          "type": "string"
         }
       },
       "requiredInputs": [
-        "length"
-      ],
-      "isComponent": true
+        "userId"
+      ]
     }
   }
 }
