@@ -6,10 +6,11 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
+using Pulumi;
 
-namespace Pulumi.ProviderBoilerplate
+namespace OsmitGmbh.CephRadosgw
 {
-    [ProviderBoilerplateResourceType("provider-boilerplate:index:RandomComponent")]
+    [CephRadosgwResourceType("ceph-radosgw:index:RandomComponent")]
     public partial class RandomComponent : global::Pulumi.ComponentResource
     {
         [Output("length")]
@@ -27,7 +28,7 @@ namespace Pulumi.ProviderBoilerplate
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
         public RandomComponent(string name, RandomComponentArgs args, ComponentResourceOptions? options = null)
-            : base("provider-boilerplate:index:RandomComponent", name, args ?? new RandomComponentArgs(), MakeResourceOptions(options, ""), remote: true)
+            : base("ceph-radosgw:index:RandomComponent", name, args ?? new RandomComponentArgs(), MakeResourceOptions(options, ""), remote: true)
         {
         }
 

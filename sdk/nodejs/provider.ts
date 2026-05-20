@@ -6,7 +6,7 @@ import * as utilities from "./utilities";
 
 export class Provider extends pulumi.ProviderResource {
     /** @internal */
-    public static readonly __pulumiType = 'provider-boilerplate';
+    public static readonly __pulumiType = 'ceph-radosgw';
 
     /**
      * Returns true if the given object is an instance of Provider.  This is designed to work even
@@ -42,5 +42,5 @@ export class Provider extends pulumi.ProviderResource {
  * The set of arguments for constructing a Provider resource.
  */
 export interface ProviderArgs {
-    itsasecret?: pulumi.Input<boolean>;
+    itsasecret?: pulumi.Input<boolean | undefined>;
 }

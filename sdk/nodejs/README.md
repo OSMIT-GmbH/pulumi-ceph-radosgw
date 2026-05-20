@@ -1,1 +1,1 @@
-An example built with pulumi-go-provider.
+A Pulumi provider for managing Ceph Rados Gateway resources.

@@ -6,10 +6,11 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
+using Pulumi;
 
-namespace Pulumi.ProviderBoilerplate
+namespace OsmitGmbh.CephRadosgw
 {
-    [ProviderBoilerplateResourceType("pulumi:providers:provider-boilerplate")]
+    [CephRadosgwResourceType("pulumi:providers:ceph-radosgw")]
     public partial class Provider : global::Pulumi.ProviderResource
     {
         /// <summary>
@@ -20,7 +21,7 @@ namespace Pulumi.ProviderBoilerplate
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
         public Provider(string name, ProviderArgs? args = null, CustomResourceOptions? options = null)
-            : base("provider-boilerplate", name, args ?? new ProviderArgs(), MakeResourceOptions(options, ""))
+            : base("ceph-radosgw", name, args ?? new ProviderArgs(), MakeResourceOptions(options, ""))
         {
         }
 

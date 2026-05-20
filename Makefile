@@ -1,19 +1,19 @@
 PROJECT_NAME := Pulumi Provider Boilerplate
 
-PACK             := provider-boilerplate
+PACK             := ceph-radosgw
 PACKDIR          := sdk
-PROJECT          := github.com/pulumi/pulumi-provider-boilerplate
-NODE_MODULE_NAME := @pulumi/boilerplate
-NUGET_PKG_NAME   := Pulumi.Boilerplate
+PROJECT          := github.com/OSMIT-GmbH/pulumi-ceph-radosgw
+NODE_MODULE_NAME := @osmit-gmbh/pulumi-ceph-radosgw
+NUGET_PKG_NAME   := OSMIT-GmbH.Pulumi-Ceph-Radosgw
 
 PROVIDER        := pulumi-resource-${PACK}
 PROVIDER_PATH   := provider
-VERSION_PATH    := ${PROVIDER_PATH}/version.Version
+VERSION_PATH    := ${PROVIDER_PATH}.Version
 
 PULUMI          := pulumi
 
-SCHEMA_FILE     := provider/cmd/pulumi-resource-provider-boilerplate/schema.json
-export GOPATH   := $(shell go env GOPATH)
+SCHEMA_FILE     := provider/cmd/pulumi-resource-ceph-radosgw/schema.json
+export GOPATH   := $(shell go env GOPATH 2>/dev/null)
 
 WORKING_DIR     := $(shell pwd)
 TESTPARALLELISM := 4
@@ -22,13 +22,13 @@ prepare:
 	@if test -z "${NAME}"; then echo "NAME not set"; exit 1; fi
 	@if test -z "${REPOSITORY}"; then echo "REPOSITORY not set"; exit 1; fi
 	@if test -z "${ORG}"; then echo "ORG not set"; exit 1; fi
-	@if test ! -d "provider/cmd/pulumi-resource-provider-boilerplate"; then "Project already prepared"; exit 1; fi # SED_SKIP
+	@if test ! -d "provider/cmd/pulumi-resource-ceph-radosgw"; then "Project already prepared"; exit 1; fi # SED_SKIP
 
 	# SED needs to not fail when encountering unicode characters
 	LC_CTYPE=C 
 	LANG=C
 
-	mv "provider/cmd/pulumi-resource-provider-boilerplate" provider/cmd/pulumi-resource-${NAME} # SED_SKIP
+	mv "provider/cmd/pulumi-resource-ceph-radosgw" provider/cmd/pulumi-resource-${NAME} # SED_SKIP
 	
 	# In MacOS the -i parameter needs an empty  to execute in place.
 	if [[ "${OS}" == "Darwin" ]]; then \
@@ -89,7 +89,7 @@ sdk/go: ${SCHEMA_FILE}
 	$(PULUMI) package gen-sdk --language go ${SCHEMA_FILE} --version "${VERSION_GENERIC}"
 	cp go.mod ${PACKDIR}/go/pulumi-${PACK}/go.mod
 	cd ${PACKDIR}/go/pulumi-${PACK} && \
-		go mod edit -module=github.com/pulumi/pulumi-${PACK}/${PACKDIR}/go/pulumi-${PACK} && \
+		go mod edit -module=${PROJECT}/${PACKDIR}/go/pulumi-${PACK} && \
 		go mod tidy
 
 .PHONY: provider
