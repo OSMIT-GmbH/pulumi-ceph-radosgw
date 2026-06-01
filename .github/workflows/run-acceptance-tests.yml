@@ -372,7 +372,7 @@ jobs:
     name: test
     permissions:
       contents: read
-      id-token: write
+      # id-token: write
     steps:
     - name: Checkout Repo
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -380,21 +380,21 @@ jobs:
         lfs: true
         persist-credentials: false
         ref: ${{ env.PR_COMMIT_SHA }}    
-    - env:
-        ESC_ACTION_ENVIRONMENT: imports/github-secrets
-        ESC_ACTION_EXPORT_ENVIRONMENT_VARIABLES: "false"
-        ESC_ACTION_OIDC_AUTH: "true"
-        ESC_ACTION_OIDC_ORGANIZATION: pulumi
-        ESC_ACTION_OIDC_REQUESTED_TOKEN_TYPE: urn:pulumi:token-type:access_token:organization
-      id: esc-secrets
-      name: Fetch secrets from ESC
-      uses: pulumi/esc-action@9eb774255b1a4afb7855678ae8d4a77359da0d9b
-    - uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
-      id: app-auth
-      with:
-        app-id: ${{ steps.esc-secrets.outputs.PULUMI_PROVIDER_AUTOMATION_APP_ID }}
-        private-key: ${{ steps.esc-secrets.outputs.PULUMI_PROVIDER_AUTOMATION_PRIVATE_KEY }}
-        owner: ${{ github.repository_owner }}
+    # - env:                                                                    # we don't use ESC
+    #     ESC_ACTION_ENVIRONMENT: imports/github-secrets
+    #     ESC_ACTION_EXPORT_ENVIRONMENT_VARIABLES: "false"
+    #     ESC_ACTION_OIDC_AUTH: "true"
+    #     ESC_ACTION_OIDC_ORGANIZATION: pulumi
+    #     ESC_ACTION_OIDC_REQUESTED_TOKEN_TYPE: urn:pulumi:token-type:access_token:organization
+    #   id: esc-secrets
+    #   name: Fetch secrets from ESC
+    #   uses: pulumi/esc-action@9eb774255b1a4afb7855678ae8d4a77359da0d9b
+    # - uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+    #   id: app-auth
+    #   with:
+    #     app-id: ${{ steps.esc-secrets.outputs.PULUMI_PROVIDER_AUTOMATION_APP_ID }}
+    #     private-key: ${{ steps.esc-secrets.outputs.PULUMI_PROVIDER_AUTOMATION_PRIVATE_KEY }}
+    #     owner: ${{ github.repository_owner }}
     - id: version
       name: Set Provider Version
       uses: pulumi/provider-version-action@3a647064cf4697c7c6352b9a1d9e554450cbe957 # v1.6.1
@@ -405,7 +405,7 @@ jobs:
     - name: Setup Tools
       uses: ./.github/actions/setup-tools
       with:
-        github_token: ${{ steps.app-auth.outputs.token }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
     - name: Download provider
       uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
       with:
