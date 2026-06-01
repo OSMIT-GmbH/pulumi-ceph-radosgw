@@ -444,7 +444,8 @@ jobs:
       with:
         version: v2.5.0
         token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Run tests
+    - if: false # we deleted the examples directory
+      name: Run tests
       run: >-
         set -euo pipefail
 
@@ -461,8 +462,9 @@ jobs:
         status: ${{ job.status }}
       env:
         SLACK_WEBHOOK_URL: ${{ steps.esc-secrets.outputs.SLACK_WEBHOOK_URL }}
-    if: github.event_name == 'repository_dispatch' ||
-      github.event.pull_request.head.repo.full_name == github.repository
+    if: false # we deleted the examples directory
+    # if: github.event_name == 'repository_dispatch' ||
+    #   github.event.pull_request.head.repo.full_name == github.repository
   sentinel:
     runs-on: ubuntu-latest
     name: sentinel

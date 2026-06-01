@@ -337,7 +337,8 @@ jobs:
       with:
         version: v2.5.0
         token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Run tests
+    - if: false # we deleted the examples directory
+      name: Run tests
       run: >-
         set -euo pipefail
 
