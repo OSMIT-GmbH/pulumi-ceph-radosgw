@@ -7,7 +7,7 @@ on:
     - v*.*.*
     - "!v*.*.*-**"
 env:
-  PROVIDER: provider-boilerplate
+  PROVIDER: ceph-radosgw
   TRAVIS_OS_NAME: linux
   GOVERSION: "1.21.x"
   NODEVERSION: "20.x"
@@ -577,8 +577,8 @@ jobs:
       with:
         repository: ${{ github.repository }}
         base-ref: ${{ github.sha }}
-        source: sdk/go/pulumi-provider-boilerplate
-        path: sdk/go/pulumi-provider-boilerplate
+        source: sdk/go/pulumi-ceph-radosgw
+        path: sdk/go/pulumi-ceph-radosgw
         version: ${{ steps.version.outputs.version }}
         additive: false
         files: "**"

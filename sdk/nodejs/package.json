@@ -1,21 +1,25 @@
 {
-    "name": "@osmit-gmbh/pulumi-ceph-radosgw",
+  "name": "@osmit-gmbh/pulumi-ceph-radosgw",
+  "version": "1.0.0-alpha.0+dev",
+  "homepage": "https://github.com/OSMIT-GmbH/pulumi-ceph-radosgw",
+  "repository": "https://github.com/OSMIT-GmbH/pulumi-ceph-radosgw",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@pulumi/pulumi": "^3.142.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "typescript": "^4.7.0"
+  },
+  "pulumi": {
+    "resource": true,
+    "name": "ceph-radosgw",
     "version": "1.0.0-alpha.0+dev",
-    "homepage": "https://github.com/OSMIT-GmbH/pulumi-ceph-radosgw",
-    "repository": "https://github.com/OSMIT-GmbH/pulumi-ceph-radosgw",
-    "scripts": {
-        "build": "tsc"
-    },
-    "dependencies": {
-        "@pulumi/pulumi": "^3.142.0"
-    },
-    "devDependencies": {
-        "@types/node": "^20",
-        "typescript": "^4.7.0"
-    },
-    "pulumi": {
-        "resource": true,
-        "name": "ceph-radosgw",
-        "version": "1.0.0-alpha.0+dev"
-    }
+    "server": "github://api.github.com/OSMIT-GmbH"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
 }

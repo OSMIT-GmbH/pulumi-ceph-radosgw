@@ -5,6 +5,7 @@ PACKDIR          := sdk
 PROJECT          := github.com/OSMIT-GmbH/pulumi-ceph-radosgw
 NODE_MODULE_NAME := @osmit-gmbh/pulumi-ceph-radosgw
 NUGET_PKG_NAME   := OSMIT-GmbH.Pulumi-Ceph-Radosgw
+PLUGIN_SERVER_URL := github://api.github.com/OSMIT-GmbH
 
 PROVIDER        := pulumi-resource-${PACK}
 PROVIDER_PATH   := provider
@@ -106,11 +107,16 @@ test_provider:
 	cd provider && go test -short -v -count=1 -cover -timeout 2h -parallel ${TESTPARALLELISM} -coverprofile="coverage.txt" ./...
 
 dotnet_sdk: sdk/dotnet
-	cd ${PACKDIR}/dotnet/&& \
+	cd ${PACKDIR}/dotnet/ && \
+		jq --arg server "$(PLUGIN_SERVER_URL)" '.server = $$server' pulumi-plugin.json > pulumi-plugin.json.tmp && \
+		mv pulumi-plugin.json.tmp pulumi-plugin.json && \
 		echo "${VERSION_GENERIC}" > version.txt && \
 		dotnet build
 
 go_sdk:	sdk/go
+	cd ${PACKDIR}/go/pulumi-${PACK} && \
+		jq --arg server "$(PLUGIN_SERVER_URL)" '.server = $$server' pulumi-plugin.json > pulumi-plugin.json.tmp && \
+		mv pulumi-plugin.json.tmp pulumi-plugin.json
 
 nodejs_sdk: sdk/nodejs
 	cd ${PACKDIR}/nodejs/ && \
@@ -118,13 +124,15 @@ nodejs_sdk: sdk/nodejs
 		rm package.json.bak && \
 		yarn install && \
 		yarn run tsc && \
-		jq '.publishConfig = {"registry": "https://npm.pkg.github.com"}' package.json > package.json.tmp && \
+		jq --arg server "$(PLUGIN_SERVER_URL)" '.publishConfig = {"registry": "https://npm.pkg.github.com"} | .pulumi.server = $$server' package.json > package.json.tmp && \
 		mv package.json.tmp package.json
 	cp README.md LICENSE ${PACKDIR}/nodejs/package.json ${PACKDIR}/nodejs/yarn.lock ${PACKDIR}/nodejs/bin/
 
 python_sdk: sdk/python
 	cp README.md ${PACKDIR}/python/
 	cd ${PACKDIR}/python/ && \
+		jq --arg server "$(PLUGIN_SERVER_URL)" '.server = $$server' osmit_gmbh_ceph_radosgw/pulumi-plugin.json > osmit_gmbh_ceph_radosgw/pulumi-plugin.json.tmp && \
+		mv osmit_gmbh_ceph_radosgw/pulumi-plugin.json.tmp osmit_gmbh_ceph_radosgw/pulumi-plugin.json && \
 		rm -rf ./bin/ ../python.bin/ && cp -R . ../python.bin && mv ../python.bin ./bin && \
 		python3 -m venv venv && \
 		./venv/bin/python -m pip install build && \
