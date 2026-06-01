@@ -117,7 +117,9 @@ nodejs_sdk: sdk/nodejs
 		sed -i.bak 's!"name": "@osmit-gmbh/${PACK}"!"name": "$(NODE_MODULE_NAME)"!g' package.json && \
 		rm package.json.bak && \
 		yarn install && \
-		yarn run tsc
+		yarn run tsc && \
+		jq '.publishConfig = {"registry": "https://npm.pkg.github.com"}' package.json > package.json.tmp && \
+		mv package.json.tmp package.json
 	cp README.md LICENSE ${PACKDIR}/nodejs/package.json ${PACKDIR}/nodejs/yarn.lock ${PACKDIR}/nodejs/bin/
 
 python_sdk: sdk/python
