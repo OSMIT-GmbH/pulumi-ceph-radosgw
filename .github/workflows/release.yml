@@ -128,7 +128,8 @@ jobs:
       uses: codecov/codecov-action@e79a6962e0d4c0c17b229090214935d2e33f8354 # v6.0.1
       env:
         CODECOV_TOKEN: ${{ steps.esc-secrets.outputs.CODECOV_TOKEN }}
-    - if: failure() && github.event_name == 'push'
+    - if: false # we don't use slack
+      # if: failure() && github.event_name == 'push'
       name: Notify Slack
       uses: 8398a7/action-slack@77eaa4f1c608a7d68b38af4e3f739dcd8cba273e # v3.19.0
       with:
@@ -210,7 +211,8 @@ jobs:
       with:
         name: ${{ matrix.language  }}-sdk.tar.gz
         path: ${{ github.workspace}}/sdk/${{ matrix.language }}.tar.gz
-    - if: failure() && github.event_name == 'push'
+    - if: false # we don't use slack
+      # if: failure() && github.event_name == 'push'
       name: Notify Slack
       uses: 8398a7/action-slack@77eaa4f1c608a7d68b38af4e3f739dcd8cba273e # v3.19.0
       with:
@@ -299,7 +301,8 @@ jobs:
         cd examples && go test -count=1 -cover -timeout 2h -tags=${{ matrix.language }} -parallel 4 .
       env:
         GTIHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - if: failure() && github.event_name == 'push'
+    - if: false # we don't use slack
+      # if: failure() && github.event_name == 'push'
       name: Notify Slack
       uses: 8398a7/action-slack@77eaa4f1c608a7d68b38af4e3f739dcd8cba273e # v3.19.0
       with:
@@ -380,7 +383,8 @@ jobs:
       with:
         args: -p 3 release --clean --timeout 60m0s
         version: latest
-    - if: failure() && github.event_name == 'push'
+    - if: false # we don't use slack
+      # if: failure() && github.event_name == 'push'
       name: Notify Slack
       uses: 8398a7/action-slack@77eaa4f1c608a7d68b38af4e3f739dcd8cba273e # v3.19.0
       with:
@@ -477,7 +481,8 @@ jobs:
       working-directory: sdk/nodejs/bin
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - if: failure() && github.event_name == 'push'
+    - if: false # we don't use slack
+      # if: failure() && github.event_name == 'push'
       name: Notify Slack
       uses: 8398a7/action-slack@77eaa4f1c608a7d68b38af4e3f739dcd8cba273e # v3.19.0
       with:

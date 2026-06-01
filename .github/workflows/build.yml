@@ -135,7 +135,8 @@ jobs:
       uses: codecov/codecov-action@e79a6962e0d4c0c17b229090214935d2e33f8354 # v6.0.1
       env:
         CODECOV_TOKEN: ${{ steps.esc-secrets.outputs.CODECOV_TOKEN }}
-    - if: failure() && github.event_name == 'push'
+    - if: false # we don't use slack
+      # if: failure() && github.event_name == 'push'
       name: Notify Slack
       uses: 8398a7/action-slack@77eaa4f1c608a7d68b38af4e3f739dcd8cba273e # v3.19.0
       with:
@@ -218,7 +219,8 @@ jobs:
         name: ${{ matrix.language  }}-sdk.tar.gz
         path: ${{ github.workspace}}/sdk/${{ matrix.language }}.tar.gz
         retention-days: 30
-    - if: failure() && github.event_name == 'push'
+    - if: false # we don't use slack
+      # if: failure() && github.event_name == 'push'
       name: Notify Slack
       uses: 8398a7/action-slack@77eaa4f1c608a7d68b38af4e3f739dcd8cba273e # v3.19.0
       with:
@@ -342,7 +344,8 @@ jobs:
         cd examples && go test -count=1 -cover -timeout 2h -tags=${{ matrix.language }} -parallel 4 .
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - if: failure() && github.event_name == 'push'
+    - if: false # we don't use slack
+      # if: failure() && github.event_name == 'push'
       name: Notify Slack
       uses: 8398a7/action-slack@77eaa4f1c608a7d68b38af4e3f739dcd8cba273e # v3.19.0
       with:
@@ -423,7 +426,8 @@ jobs:
       with:
         args: -p 3 -f .goreleaser.prerelease.yml --clean --skip=validate --timeout 60m0s
         version: latest
-    - if: failure() && github.event_name == 'push'
+    - if: false # we don't use slack
+      # if: failure() && github.event_name == 'push'
       name: Notify Slack
       uses: 8398a7/action-slack@77eaa4f1c608a7d68b38af4e3f739dcd8cba273e # v3.19.0
       with:
@@ -515,7 +519,8 @@ jobs:
         SIGNING_PASSWORD: ${{ steps.esc-secrets.outputs.JAVA_SIGNING_PASSWORD }}
         PUBLISH_REPO_USERNAME: ${{ steps.esc-secrets.outputs.OSSRH_USERNAME }}
         PUBLISH_REPO_PASSWORD: ${{ steps.esc-secrets.outputs.OSSRH_PASSWORD }}
-    - if: failure() && github.event_name == 'push'
+    - if: false # we don't use slack
+      # if: failure() && github.event_name == 'push'
       name: Notify Slack
       uses: 8398a7/action-slack@77eaa4f1c608a7d68b38af4e3f739dcd8cba273e # v3.19.0
       with:
