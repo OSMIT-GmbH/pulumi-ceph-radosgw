@@ -114,6 +114,8 @@ go_sdk:	sdk/go
 
 nodejs_sdk: sdk/nodejs
 	cd ${PACKDIR}/nodejs/ && \
+		sed -i.bak 's!"name": "@osmit-gmbh/${PACK}"!"name": "$(NODE_MODULE_NAME)"!g' package.json && \
+		rm package.json.bak && \
 		yarn install && \
 		yarn run tsc
 	cp README.md LICENSE ${PACKDIR}/nodejs/package.json ${PACKDIR}/nodejs/yarn.lock ${PACKDIR}/nodejs/bin/
@@ -147,6 +149,7 @@ lint:
 
 install:: install_nodejs_sdk install_dotnet_sdk
 	cp $(WORKING_DIR)/bin/${PROVIDER} ${GOPATH}/bin
+	pulumi plugin install resource ${PACK} ${VERSION_GENERIC} -f $(WORKING_DIR)/bin/${PROVIDER} --reinstall
 
 
 GO_TEST := go test -v -count=1 -cover -timeout 2h -parallel ${TESTPARALLELISM}

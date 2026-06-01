@@ -1,5 +1,5 @@
 {
-    "name": "@osmit-gmbh/ceph-radosgw",
+    "name": "@osmit-gmbh/pulumi-ceph-radosgw",
     "version": "1.0.0-alpha.0+dev",
     "homepage": "https://github.com/OSMIT-GmbH/pulumi-ceph-radosgw",
     "repository": "https://github.com/OSMIT-GmbH/pulumi-ceph-radosgw",
