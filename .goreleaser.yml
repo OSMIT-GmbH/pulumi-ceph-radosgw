@@ -34,9 +34,9 @@ builds:
   main: ./cmd/pulumi-resource-ceph-radosgw/
   ldflags: *a2
   binary: pulumi-resource-ceph-radosgw
-  hooks:
-    post:
-    - make sign-goreleaser-exe-{{ .Arch }}
+  # hooks:                                                                    # we don't use Windows signing
+  #   post:
+  #   - make sign-goreleaser-exe-{{ .Arch }}
 archives:
 - name_template: "{{ .Binary }}-{{ .Tag }}-{{ .Os }}-{{ .Arch }}"
   id: archive
