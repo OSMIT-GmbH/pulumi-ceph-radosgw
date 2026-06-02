@@ -7,7 +7,6 @@ import (
 	"context"
 	"reflect"
 
-	"errors"
 	"github.com/OSMIT-GmbH/pulumi-ceph-radosgw/sdk/go/pulumi-ceph-radosgw/internal"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -16,37 +15,28 @@ type Provider struct {
 	pulumi.ProviderResourceState
 
 	// The username. It's important but not secret.
-	AccessKeyID pulumi.StringOutput `pulumi:"accessKeyID"`
+	AccessKeyID pulumi.StringPtrOutput `pulumi:"accessKeyID"`
 	// Assimilate an existing object during create
 	Assimilate pulumi.StringPtrOutput `pulumi:"assimilate"`
 	// Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)
 	DeleteAssimilated pulumi.StringPtrOutput `pulumi:"deleteAssimilated"`
 	// The URI to the API
-	Endpoint pulumi.StringOutput `pulumi:"endpoint"`
+	Endpoint pulumi.StringPtrOutput `pulumi:"endpoint"`
 	// Don't validate server SSL certificate
 	Insecure pulumi.StringPtrOutput `pulumi:"insecure"`
 	// The password. It is very secret.
-	SecretAccessKey pulumi.StringOutput `pulumi:"secretAccessKey"`
+	SecretAccessKey pulumi.StringPtrOutput `pulumi:"secretAccessKey"`
 }
 
 // NewProvider registers a new resource with the given unique name, arguments, and options.
 func NewProvider(ctx *pulumi.Context,
 	name string, args *ProviderArgs, opts ...pulumi.ResourceOption) (*Provider, error) {
 	if args == nil {
-		return nil, errors.New("missing one or more required arguments")
+		args = &ProviderArgs{}
 	}
 
-	if args.AccessKeyID == nil {
-		return nil, errors.New("invalid value for required argument 'AccessKeyID'")
-	}
-	if args.Endpoint == nil {
-		return nil, errors.New("invalid value for required argument 'Endpoint'")
-	}
-	if args.SecretAccessKey == nil {
-		return nil, errors.New("invalid value for required argument 'SecretAccessKey'")
-	}
 	if args.SecretAccessKey != nil {
-		args.SecretAccessKey = pulumi.ToSecret(args.SecretAccessKey).(pulumi.StringInput)
+		args.SecretAccessKey = pulumi.ToSecret(args.SecretAccessKey).(pulumi.StringPtrInput)
 	}
 	secrets := pulumi.AdditionalSecretOutputs([]string{
 		"secretAccessKey",
@@ -63,33 +53,33 @@ func NewProvider(ctx *pulumi.Context,
 
 type providerArgs struct {
 	// The username. It's important but not secret.
-	AccessKeyID string `pulumi:"accessKeyID"`
+	AccessKeyID *string `pulumi:"accessKeyID"`
 	// Assimilate an existing object during create
 	Assimilate *string `pulumi:"assimilate"`
 	// Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)
 	DeleteAssimilated *string `pulumi:"deleteAssimilated"`
 	// The URI to the API
-	Endpoint string `pulumi:"endpoint"`
+	Endpoint *string `pulumi:"endpoint"`
 	// Don't validate server SSL certificate
 	Insecure *string `pulumi:"insecure"`
 	// The password. It is very secret.
-	SecretAccessKey string `pulumi:"secretAccessKey"`
+	SecretAccessKey *string `pulumi:"secretAccessKey"`
 }
 
 // The set of arguments for constructing a Provider resource.
 type ProviderArgs struct {
 	// The username. It's important but not secret.
-	AccessKeyID pulumi.StringInput
+	AccessKeyID pulumi.StringPtrInput
 	// Assimilate an existing object during create
 	Assimilate pulumi.StringPtrInput
 	// Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)
 	DeleteAssimilated pulumi.StringPtrInput
 	// The URI to the API
-	Endpoint pulumi.StringInput
+	Endpoint pulumi.StringPtrInput
 	// Don't validate server SSL certificate
 	Insecure pulumi.StringPtrInput
 	// The password. It is very secret.
-	SecretAccessKey pulumi.StringInput
+	SecretAccessKey pulumi.StringPtrInput
 }
 
 func (ProviderArgs) ElementType() reflect.Type {
@@ -130,8 +120,8 @@ func (o ProviderOutput) ToProviderOutputWithContext(ctx context.Context) Provide
 }
 
 // The username. It's important but not secret.
-func (o ProviderOutput) AccessKeyID() pulumi.StringOutput {
-	return o.ApplyT(func(v *Provider) pulumi.StringOutput { return v.AccessKeyID }).(pulumi.StringOutput)
+func (o ProviderOutput) AccessKeyID() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Provider) pulumi.StringPtrOutput { return v.AccessKeyID }).(pulumi.StringPtrOutput)
 }
 
 // Assimilate an existing object during create
@@ -145,8 +135,8 @@ func (o ProviderOutput) DeleteAssimilated() pulumi.StringPtrOutput {
 }
 
 // The URI to the API
-func (o ProviderOutput) Endpoint() pulumi.StringOutput {
-	return o.ApplyT(func(v *Provider) pulumi.StringOutput { return v.Endpoint }).(pulumi.StringOutput)
+func (o ProviderOutput) Endpoint() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Provider) pulumi.StringPtrOutput { return v.Endpoint }).(pulumi.StringPtrOutput)
 }
 
 // Don't validate server SSL certificate
@@ -155,8 +145,8 @@ func (o ProviderOutput) Insecure() pulumi.StringPtrOutput {
 }
 
 // The password. It is very secret.
-func (o ProviderOutput) SecretAccessKey() pulumi.StringOutput {
-	return o.ApplyT(func(v *Provider) pulumi.StringOutput { return v.SecretAccessKey }).(pulumi.StringOutput)
+func (o ProviderOutput) SecretAccessKey() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *Provider) pulumi.StringPtrOutput { return v.SecretAccessKey }).(pulumi.StringPtrOutput)
 }
 
 func init() {

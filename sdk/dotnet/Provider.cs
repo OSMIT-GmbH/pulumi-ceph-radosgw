@@ -17,7 +17,7 @@ namespace OsmitGmbh.CephRadosgw
         /// The username. It's important but not secret.
         /// </summary>
         [Output("accessKeyID")]
-        public Output<string> AccessKeyID { get; private set; } = null!;
+        public Output<string?> AccessKeyID { get; private set; } = null!;
 
         /// <summary>
         /// Assimilate an existing object during create
@@ -35,7 +35,7 @@ namespace OsmitGmbh.CephRadosgw
         /// The URI to the API
         /// </summary>
         [Output("endpoint")]
-        public Output<string> Endpoint { get; private set; } = null!;
+        public Output<string?> Endpoint { get; private set; } = null!;
 
         /// <summary>
         /// Don't validate server SSL certificate
@@ -47,7 +47,7 @@ namespace OsmitGmbh.CephRadosgw
         /// The password. It is very secret.
         /// </summary>
         [Output("secretAccessKey")]
-        public Output<string> SecretAccessKey { get; private set; } = null!;
+        public Output<string?> SecretAccessKey { get; private set; } = null!;
 
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace OsmitGmbh.CephRadosgw
         /// <param name="name">The unique name of the resource</param>
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
-        public Provider(string name, ProviderArgs args, CustomResourceOptions? options = null)
+        public Provider(string name, ProviderArgs? args = null, CustomResourceOptions? options = null)
             : base("ceph-radosgw", name, args ?? new ProviderArgs(), MakeResourceOptions(options, ""))
         {
         }
@@ -84,8 +84,8 @@ namespace OsmitGmbh.CephRadosgw
         /// <summary>
         /// The username. It's important but not secret.
         /// </summary>
-        [Input("accessKeyID", required: true)]
-        public Input<string> AccessKeyID { get; set; } = null!;
+        [Input("accessKeyID")]
+        public Input<string>? AccessKeyID { get; set; }
 
         /// <summary>
         /// Assimilate an existing object during create
@@ -102,8 +102,8 @@ namespace OsmitGmbh.CephRadosgw
         /// <summary>
         /// The URI to the API
         /// </summary>
-        [Input("endpoint", required: true)]
-        public Input<string> Endpoint { get; set; } = null!;
+        [Input("endpoint")]
+        public Input<string>? Endpoint { get; set; }
 
         /// <summary>
         /// Don't validate server SSL certificate
@@ -111,7 +111,7 @@ namespace OsmitGmbh.CephRadosgw
         [Input("insecure")]
         public Input<string>? Insecure { get; set; }
 
-        [Input("secretAccessKey", required: true)]
+        [Input("secretAccessKey")]
         private Input<string>? _secretAccessKey;
 
         /// <summary>

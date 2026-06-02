@@ -14,8 +14,8 @@ public final class Config {
  * The username. It&#39;s important but not secret.
  * 
  */
-    public String accessKeyID() {
-        return Codegen.stringProp("accessKeyID").config(config).require();
+    public Optional<String> accessKeyID() {
+        return Codegen.stringProp("accessKeyID").config(config).get();
     }
 /**
  * Assimilate an existing object during create
@@ -35,8 +35,8 @@ public final class Config {
  * The URI to the API
  * 
  */
-    public String endpoint() {
-        return Codegen.stringProp("endpoint").config(config).require();
+    public Optional<String> endpoint() {
+        return Codegen.stringProp("endpoint").config(config).get();
     }
 /**
  * Don&#39;t validate server SSL certificate
@@ -49,7 +49,7 @@ public final class Config {
  * The password. It is very secret.
  * 
  */
-    public String secretAccessKey() {
-        return Codegen.stringProp("secretAccessKey").config(config).require();
+    public Optional<String> secretAccessKey() {
+        return Codegen.stringProp("secretAccessKey").config(config).get();
     }
 }

@@ -5,7 +5,6 @@ package com.osmitgmbh.cephradosgw;
 
 import com.pulumi.core.Output;
 import com.pulumi.core.annotations.Import;
-import com.pulumi.exceptions.MissingRequiredPropertyException;
 import java.lang.String;
 import java.util.Objects;
 import java.util.Optional;
@@ -20,15 +19,15 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
      * The username. It&#39;s important but not secret.
      * 
      */
-    @Import(name="accessKeyID", required=true)
-    private Output<String> accessKeyID;
+    @Import(name="accessKeyID")
+    private @Nullable Output<String> accessKeyID;
 
     /**
      * @return The username. It&#39;s important but not secret.
      * 
      */
-    public Output<String> accessKeyID() {
-        return this.accessKeyID;
+    public Optional<Output<String>> accessKeyID() {
+        return Optional.ofNullable(this.accessKeyID);
     }
 
     /**
@@ -65,15 +64,15 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
      * The URI to the API
      * 
      */
-    @Import(name="endpoint", required=true)
-    private Output<String> endpoint;
+    @Import(name="endpoint")
+    private @Nullable Output<String> endpoint;
 
     /**
      * @return The URI to the API
      * 
      */
-    public Output<String> endpoint() {
-        return this.endpoint;
+    public Optional<Output<String>> endpoint() {
+        return Optional.ofNullable(this.endpoint);
     }
 
     /**
@@ -95,15 +94,15 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
      * The password. It is very secret.
      * 
      */
-    @Import(name="secretAccessKey", required=true)
-    private Output<String> secretAccessKey;
+    @Import(name="secretAccessKey")
+    private @Nullable Output<String> secretAccessKey;
 
     /**
      * @return The password. It is very secret.
      * 
      */
-    public Output<String> secretAccessKey() {
-        return this.secretAccessKey;
+    public Optional<Output<String>> secretAccessKey() {
+        return Optional.ofNullable(this.secretAccessKey);
     }
 
     private ProviderArgs() {}
@@ -141,7 +140,7 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder accessKeyID(Output<String> accessKeyID) {
+        public Builder accessKeyID(@Nullable Output<String> accessKeyID) {
             $.accessKeyID = accessKeyID;
             return this;
         }
@@ -204,7 +203,7 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder endpoint(Output<String> endpoint) {
+        public Builder endpoint(@Nullable Output<String> endpoint) {
             $.endpoint = endpoint;
             return this;
         }
@@ -246,7 +245,7 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
          * @return builder
          * 
          */
-        public Builder secretAccessKey(Output<String> secretAccessKey) {
+        public Builder secretAccessKey(@Nullable Output<String> secretAccessKey) {
             $.secretAccessKey = secretAccessKey;
             return this;
         }
@@ -262,15 +261,6 @@ public final class ProviderArgs extends com.pulumi.resources.ResourceArgs {
         }
 
         public ProviderArgs build() {
-            if ($.accessKeyID == null) {
-                throw new MissingRequiredPropertyException("ProviderArgs", "accessKeyID");
-            }
-            if ($.endpoint == null) {
-                throw new MissingRequiredPropertyException("ProviderArgs", "endpoint");
-            }
-            if ($.secretAccessKey == null) {
-                throw new MissingRequiredPropertyException("ProviderArgs", "secretAccessKey");
-            }
             return $;
         }
     }

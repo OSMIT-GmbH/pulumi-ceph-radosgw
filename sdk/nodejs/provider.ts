@@ -22,7 +22,7 @@ export class Provider extends pulumi.ProviderResource {
     /**
      * The username. It's important but not secret.
      */
-    declare public readonly accessKeyID: pulumi.Output<string>;
+    declare public readonly accessKeyID: pulumi.Output<string | undefined>;
     /**
      * Assimilate an existing object during create
      */
@@ -34,7 +34,7 @@ export class Provider extends pulumi.ProviderResource {
     /**
      * The URI to the API
      */
-    declare public readonly endpoint: pulumi.Output<string>;
+    declare public readonly endpoint: pulumi.Output<string | undefined>;
     /**
      * Don't validate server SSL certificate
      */
@@ -42,7 +42,7 @@ export class Provider extends pulumi.ProviderResource {
     /**
      * The password. It is very secret.
      */
-    declare public readonly secretAccessKey: pulumi.Output<string>;
+    declare public readonly secretAccessKey: pulumi.Output<string | undefined>;
 
     /**
      * Create a Provider resource with the given unique name, arguments, and options.
@@ -51,19 +51,10 @@ export class Provider extends pulumi.ProviderResource {
      * @param args The arguments to use to populate this resource's properties.
      * @param opts A bag of options that control this resource's behavior.
      */
-    constructor(name: string, args: ProviderArgs, opts?: pulumi.ResourceOptions) {
+    constructor(name: string, args?: ProviderArgs, opts?: pulumi.ResourceOptions) {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         {
-            if (args?.accessKeyID === undefined && !opts.urn) {
-                throw new Error("Missing required property 'accessKeyID'");
-            }
-            if (args?.endpoint === undefined && !opts.urn) {
-                throw new Error("Missing required property 'endpoint'");
-            }
-            if (args?.secretAccessKey === undefined && !opts.urn) {
-                throw new Error("Missing required property 'secretAccessKey'");
-            }
             resourceInputs["accessKeyID"] = args?.accessKeyID;
             resourceInputs["assimilate"] = args?.assimilate;
             resourceInputs["deleteAssimilated"] = args?.deleteAssimilated;
@@ -85,7 +76,7 @@ export interface ProviderArgs {
     /**
      * The username. It's important but not secret.
      */
-    accessKeyID: pulumi.Input<string>;
+    accessKeyID?: pulumi.Input<string | undefined>;
     /**
      * Assimilate an existing object during create
      */
@@ -97,7 +88,7 @@ export interface ProviderArgs {
     /**
      * The URI to the API
      */
-    endpoint: pulumi.Input<string>;
+    endpoint?: pulumi.Input<string | undefined>;
     /**
      * Don't validate server SSL certificate
      */
@@ -105,5 +96,5 @@ export interface ProviderArgs {
     /**
      * The password. It is very secret.
      */
-    secretAccessKey: pulumi.Input<string>;
+    secretAccessKey?: pulumi.Input<string | undefined>;
 }

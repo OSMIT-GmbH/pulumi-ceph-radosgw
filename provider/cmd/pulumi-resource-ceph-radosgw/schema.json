@@ -51,12 +51,7 @@
         "description": "The password. It is very secret.",
         "secret": true
       }
-    },
-    "defaults": [
-      "accessKeyID",
-      "secretAccessKey",
-      "endpoint"
-    ]
+    }
   },
   "types": {
     "ceph-radosgw:index:Capabilities": {
@@ -234,11 +229,6 @@
         "secret": true
       }
     },
-    "required": [
-      "accessKeyID",
-      "secretAccessKey",
-      "endpoint"
-    ],
     "inputProperties": {
       "accessKeyID": {
         "type": "string",
@@ -265,12 +255,7 @@
         "description": "The password. It is very secret.",
         "secret": true
       }
-    },
-    "requiredInputs": [
-      "accessKeyID",
-      "secretAccessKey",
-      "endpoint"
-    ]
+    }
   },
   "resources": {
     "ceph-radosgw:index:Bucket": {

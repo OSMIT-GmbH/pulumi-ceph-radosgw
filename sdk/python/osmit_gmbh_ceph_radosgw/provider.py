@@ -19,67 +19,46 @@ __all__ = ['ProviderArgs', 'Provider']
 @pulumi.input_type
 class ProviderArgs:
     def __init__(__self__, *,
-                 access_key_id: pulumi.Input[_builtins.str],
-                 endpoint: pulumi.Input[_builtins.str],
-                 secret_access_key: pulumi.Input[_builtins.str],
+                 access_key_id: pulumi.Input[Optional[_builtins.str]] = None,
                  assimilate: pulumi.Input[Optional[_builtins.str]] = None,
                  delete_assimilated: pulumi.Input[Optional[_builtins.str]] = None,
-                 insecure: pulumi.Input[Optional[_builtins.str]] = None):
+                 endpoint: pulumi.Input[Optional[_builtins.str]] = None,
+                 insecure: pulumi.Input[Optional[_builtins.str]] = None,
+                 secret_access_key: pulumi.Input[Optional[_builtins.str]] = None):
         """
         The set of arguments for constructing a Provider resource.
 
         :param pulumi.Input[_builtins.str] access_key_id: The username. It's important but not secret.
-        :param pulumi.Input[_builtins.str] endpoint: The URI to the API
-        :param pulumi.Input[_builtins.str] secret_access_key: The password. It is very secret.
         :param pulumi.Input[_builtins.str] assimilate: Assimilate an existing object during create
         :param pulumi.Input[_builtins.str] delete_assimilated: Delete assimilated objects during delete (otherwise they would be kept on OpenZiti)
+        :param pulumi.Input[_builtins.str] endpoint: The URI to the API
         :param pulumi.Input[_builtins.str] insecure: Don't validate server SSL certificate
+        :param pulumi.Input[_builtins.str] secret_access_key: The password. It is very secret.
         """
-        pulumi.set(__self__, "access_key_id", access_key_id)
-        pulumi.set(__self__, "endpoint", endpoint)
-        pulumi.set(__self__, "secret_access_key", secret_access_key)
+        if access_key_id is not None:
+            pulumi.set(__self__, "access_key_id", access_key_id)
         if assimilate is not None:
             pulumi.set(__self__, "assimilate", assimilate)
         if delete_assimilated is not None:
             pulumi.set(__self__, "delete_assimilated", delete_assimilated)
+        if endpoint is not None:
+            pulumi.set(__self__, "endpoint", endpoint)
         if insecure is not None:
             pulumi.set(__self__, "insecure", insecure)
+        if secret_access_key is not None:
+            pulumi.set(__self__, "secret_access_key", secret_access_key)
 
     @_builtins.property
     @pulumi.getter(name="accessKeyID")
-    def access_key_id(self) -> pulumi.Input[_builtins.str]:
+    def access_key_id(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         The username. It's important but not secret.
         """
         return pulumi.get(self, "access_key_id")
 
     @access_key_id.setter
-    def access_key_id(self, value: pulumi.Input[_builtins.str]):
+    def access_key_id(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "access_key_id", value)
-
-    @_builtins.property
-    @pulumi.getter
-    def endpoint(self) -> pulumi.Input[_builtins.str]:
-        """
-        The URI to the API
-        """
-        return pulumi.get(self, "endpoint")
-
-    @endpoint.setter
-    def endpoint(self, value: pulumi.Input[_builtins.str]):
-        pulumi.set(self, "endpoint", value)
-
-    @_builtins.property
-    @pulumi.getter(name="secretAccessKey")
-    def secret_access_key(self) -> pulumi.Input[_builtins.str]:
-        """
-        The password. It is very secret.
-        """
-        return pulumi.get(self, "secret_access_key")
-
-    @secret_access_key.setter
-    def secret_access_key(self, value: pulumi.Input[_builtins.str]):
-        pulumi.set(self, "secret_access_key", value)
 
     @_builtins.property
     @pulumi.getter
@@ -107,6 +86,18 @@ class ProviderArgs:
 
     @_builtins.property
     @pulumi.getter
+    def endpoint(self) -> pulumi.Input[Optional[_builtins.str]]:
+        """
+        The URI to the API
+        """
+        return pulumi.get(self, "endpoint")
+
+    @endpoint.setter
+    def endpoint(self, value: pulumi.Input[Optional[_builtins.str]]):
+        pulumi.set(self, "endpoint", value)
+
+    @_builtins.property
+    @pulumi.getter
     def insecure(self) -> pulumi.Input[Optional[_builtins.str]]:
         """
         Don't validate server SSL certificate
@@ -116,6 +107,18 @@ class ProviderArgs:
     @insecure.setter
     def insecure(self, value: pulumi.Input[Optional[_builtins.str]]):
         pulumi.set(self, "insecure", value)
+
+    @_builtins.property
+    @pulumi.getter(name="secretAccessKey")
+    def secret_access_key(self) -> pulumi.Input[Optional[_builtins.str]]:
+        """
+        The password. It is very secret.
+        """
+        return pulumi.get(self, "secret_access_key")
+
+    @secret_access_key.setter
+    def secret_access_key(self, value: pulumi.Input[Optional[_builtins.str]]):
+        pulumi.set(self, "secret_access_key", value)
 
 
 @pulumi.type_token("pulumi:providers:ceph-radosgw")
@@ -147,7 +150,7 @@ class Provider(pulumi.ProviderResource):
     @overload
     def __init__(__self__,
                  resource_name: str,
-                 args: ProviderArgs,
+                 args: Optional[ProviderArgs] = None,
                  opts: Optional[pulumi.ResourceOptions] = None):
         """
         Create a Ceph-radosgw resource with the given unique name, props, and options.
@@ -182,17 +185,11 @@ class Provider(pulumi.ProviderResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = ProviderArgs.__new__(ProviderArgs)
 
-            if access_key_id is None and not opts.urn:
-                raise TypeError("Missing required property 'access_key_id'")
             __props__.__dict__["access_key_id"] = access_key_id
             __props__.__dict__["assimilate"] = assimilate
             __props__.__dict__["delete_assimilated"] = delete_assimilated
-            if endpoint is None and not opts.urn:
-                raise TypeError("Missing required property 'endpoint'")
             __props__.__dict__["endpoint"] = endpoint
             __props__.__dict__["insecure"] = insecure
-            if secret_access_key is None and not opts.urn:
-                raise TypeError("Missing required property 'secret_access_key'")
             __props__.__dict__["secret_access_key"] = None if secret_access_key is None else pulumi.Output.secret(secret_access_key)
         secret_opts = pulumi.ResourceOptions(additional_secret_outputs=["secretAccessKey"])
         opts = pulumi.ResourceOptions.merge(opts, secret_opts)
@@ -204,7 +201,7 @@ class Provider(pulumi.ProviderResource):
 
     @_builtins.property
     @pulumi.getter(name="accessKeyID")
-    def access_key_id(self) -> pulumi.Output[_builtins.str]:
+    def access_key_id(self) -> pulumi.Output[Optional[_builtins.str]]:
         """
         The username. It's important but not secret.
         """
@@ -228,7 +225,7 @@ class Provider(pulumi.ProviderResource):
 
     @_builtins.property
     @pulumi.getter
-    def endpoint(self) -> pulumi.Output[_builtins.str]:
+    def endpoint(self) -> pulumi.Output[Optional[_builtins.str]]:
         """
         The URI to the API
         """
@@ -244,7 +241,7 @@ class Provider(pulumi.ProviderResource):
 
     @_builtins.property
     @pulumi.getter(name="secretAccessKey")
-    def secret_access_key(self) -> pulumi.Output[_builtins.str]:
+    def secret_access_key(self) -> pulumi.Output[Optional[_builtins.str]]:
         """
         The password. It is very secret.
         """

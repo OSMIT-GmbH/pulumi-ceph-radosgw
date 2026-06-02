@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"os"
 	"reflect"
 	"sort"
 	"strings"
@@ -36,9 +37,9 @@ import (
 // I'm not sure what's wrong with boolean - see following error:
 // error: pulumi:providers: resource 'xyz-provider': property assimilate value {false} has a problem: Field 'assimilate' on 'provider.ProviderConfig' must be a 'bool'; got 'string' instead
 type ProviderConfig struct {
-	AccessKeyID       string `pulumi:"accessKeyID"`
-	SecretAccessKey   string `pulumi:"secretAccessKey" provider:"secret"`
-	Endpoint          string `pulumi:"endpoint"`
+	AccessKeyID       string `pulumi:"accessKeyID,optional"`
+	SecretAccessKey   string `pulumi:"secretAccessKey,optional" provider:"secret"`
+	Endpoint          string `pulumi:"endpoint,optional"`
 	Insecure          string `pulumi:"insecure,optional"`
 	insecure          bool
 	Assimilate        string `pulumi:"assimilate,optional"`
@@ -63,19 +64,20 @@ func (c *ProviderConfig) Annotate(a infer.Annotator) {
 var _ = (infer.CustomConfigure)((*ProviderConfig)(nil))
 
 func (c *ProviderConfig) Configure(ctx context.Context) error {
-	// apiUrl, err := url.Parse(c.Uri)
-
-	//if err != nil {
-	//	// return nil, errors.Wrap(err, "could not parse ZtAPI from configuration as URI")
-	//	// fmt.Errorf("no session token returned from login request to %v. Received: %v", c.Uri, zitiLogin.String())
-	//	return err
-	//}
+	if c.AccessKeyID == "" {
+		c.AccessKeyID = os.Getenv("RGW_ACCESS_KEY_ID")
+	}
+	if c.SecretAccessKey == "" {
+		c.SecretAccessKey = os.Getenv("RGW_SECRET_ACCESS_KEY")
+	}
+	if c.Endpoint == "" {
+		c.Endpoint = os.Getenv("RGW_ENDPOINT")
+	}
 	c.cacheKey = fmt.Sprintf("%s:%s:%s", c.Endpoint, c.AccessKeyID, c.SecretAccessKey)
 	c.assimilate = strings.EqualFold(c.Assimilate, "true")
 	c.deleteAssimilated = strings.EqualFold(c.DeleteAssimilated, "true")
 	c.insecure = strings.EqualFold(c.Insecure, "true")
 
-	//ctx.Log(diag.Info, msg)
 	return nil
 }
 
