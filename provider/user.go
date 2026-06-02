@@ -349,7 +349,25 @@ func (User) Diff(ctx context.Context, req infer.DiffRequest[UserArgs, UserState]
 	if req.Inputs.Email != req.State.Email {
 		diff["email"] = p.PropertyDiff{Kind: p.Update}
 	}
-	diffWalk(ctx, diff, "capabilities", reflect.ValueOf(req.State.Capabilities), reflect.ValueOf(req.Inputs.Capabilities))
+	if req.Inputs.Capabilities != nil && req.State.Capabilities != nil {
+		inVal := reflect.ValueOf(*req.Inputs.Capabilities)
+		stVal := reflect.ValueOf(*req.State.Capabilities)
+		inTyp := reflect.TypeOf(*req.Inputs.Capabilities)
+		for b := 0; b < inTyp.NumField(); b++ {
+			inF := inVal.Field(b)
+			if inF.IsNil() {
+				continue // not set in program → preserve old value
+			}
+			tag := inTyp.Field(b).Tag.Get("pulumi")
+			name := strings.Split(tag, ",")[0]
+			stF := stVal.Field(b)
+			if stF.IsNil() {
+				diff["capabilities."+name] = p.PropertyDiff{Kind: p.Add}
+			} else if inF.Elem().String() != stF.Elem().String() {
+				diff["capabilities."+name] = p.PropertyDiff{Kind: p.Update}
+			}
+		}
+	}
 
 	if len(diff) > 0 {
 		p.GetLogger(ctx).Infof("DIFF on User %s/%s: Found %d diffs: %v\n", req.Inputs.UserID, req.ID, len(diff), diff)
