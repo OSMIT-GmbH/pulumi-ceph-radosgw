@@ -233,11 +233,29 @@ func initS3(ctx context.Context) (*CacheEntry, ProviderConfig, error) {
 func diffWalk(ctx context.Context, diff map[string]p.PropertyDiff, path string, old reflect.Value, new reflect.Value) {
 	p.GetLogger(ctx).Debugf("diffWalk: visiting %s: old: %s new: %s\n", path, old.String(), new.String())
 	// Indirect through pointers and interfaces
+	oldNil := false
 	for old.Kind() == reflect.Ptr || old.Kind() == reflect.Interface {
+		if old.IsNil() {
+			oldNil = true
+			break
+		}
 		old = old.Elem()
 	}
+	newNil := false
 	for new.Kind() == reflect.Ptr || new.Kind() == reflect.Interface {
+		if new.IsNil() {
+			newNil = true
+			break
+		}
 		new = new.Elem()
+	}
+	if oldNil && newNil {
+		return
+	}
+	if oldNil || newNil {
+		p.GetLogger(ctx).Infof("diffWalk: visiting %s: one side nil (oldNil=%v newNil=%v)\n", path, oldNil, newNil)
+		diff[path] = p.PropertyDiff{Kind: p.Update}
+		return
 	}
 	if new.Kind() != old.Kind() {
 		p.GetLogger(ctx).Infof("diffWalk: visiting %s: Kind changed: old: %s new: %s\n", path, old.Kind().String(), new.Kind().String())

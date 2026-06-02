@@ -164,24 +164,30 @@ type UserState struct {
 
 func userArgsToAPI(input UserArgs) (admin.User, map[string]int) {
 	capMap := make(map[string]int)
-	capType := reflect.TypeOf(input.Capabilities)
-	capVal := reflect.ValueOf(input.Capabilities)
-	var sb strings.Builder
+	capType := reflect.TypeOf(Capabilities{})
 	for b := 0; b < capType.NumField(); b++ {
-		v2 := capVal.Field(b)
 		tag := capType.Field(b).Tag.Get("capname")
 		tagList := strings.Split(tag, ",")
-		name := tagList[0]
-		capMap[name] = b
-		if v2.String() == "" {
-			continue
+		capMap[tagList[0]] = b
+	}
+	var sb strings.Builder
+	if input.Capabilities != nil {
+		capVal := reflect.ValueOf(*input.Capabilities)
+		for b := 0; b < capType.NumField(); b++ {
+			v2 := capVal.Field(b)
+			name := capType.Field(b).Tag.Get("capname")
+			tagList := strings.Split(name, ",")
+			name = tagList[0]
+			if v2.IsNil() || v2.Elem().String() == "" {
+				continue
+			}
+			if sb.Len() > 0 {
+				sb.WriteString("; ")
+			}
+			sb.WriteString(name)
+			sb.WriteString("=")
+			sb.WriteString(v2.Elem().String())
 		}
-		if sb.Len() > 0 {
-			sb.WriteString("; ")
-		}
-		sb.WriteString(name)
-		sb.WriteString("=")
-		sb.WriteString(v2.String())
 	}
 	// func getReflect(i interface{}, acceptableFields []string, values *url.Values) {
 	// 	t := reflect.TypeOf(i)
@@ -252,7 +258,10 @@ func APItoUserArgs(ctx context.Context, capMap map[string]int, resp admin.User, 
 	}
 	// p.GetLogger(ctx).Infof("User Caps for %s: %s\n", resp.ID, resp.Caps)
 
-	ncv := reflect.ValueOf(&user.Capabilities).Elem()
+	if user.Capabilities == nil {
+		user.Capabilities = &Capabilities{}
+	}
+	ncv := reflect.ValueOf(user.Capabilities).Elem()
 	// also add subuser keys to response
 	for _, cap := range resp.Caps {
 		// p.GetLogger(ctx).Infof("cap  %s=%s\n", cap.Type, cap.Perm)
@@ -261,7 +270,13 @@ func APItoUserArgs(ctx context.Context, capMap map[string]int, resp admin.User, 
 			p.GetLogger(ctx).Errorf("ERROR: Unknown cap while looking up %s => %s on user %s\n", cap.Type, cap.Perm, user.UserID)
 			continue
 		}
-		ncv.Field(idx).SetString(cap.Perm)
+		f := ncv.Field(idx)
+		if f.IsNil() {
+			cp := CapabilityPermission(cap.Perm)
+			f.Set(reflect.ValueOf(&cp))
+		} else {
+			f.Elem().SetString(cap.Perm)
+		}
 	}
 
 	userState := UserState{UserArgs: user, Assimilated: assimilated}
@@ -392,11 +407,21 @@ func (User) Update(ctx context.Context, req infer.UpdateRequest[UserArgs, UserSt
 
 	capVal := reflect.ValueOf(req.Inputs.Capabilities)
 	capValOld := reflect.ValueOf(req.State.Capabilities)
+	getCapStr := func(v reflect.Value, b int) string {
+		if v.IsNil() {
+			return ""
+		}
+		f := v.Elem().Field(b)
+		if f.IsNil() {
+			return ""
+		}
+		return f.Elem().String()
+	}
 	var sbAdd strings.Builder
 	var sbRemove strings.Builder
 	for name, b := range capMap {
-		newPerm := capVal.Field(b).String()
-		oldPerm := capValOld.Field(b).String()
+		newPerm := getCapStr(capVal, b)
+		oldPerm := getCapStr(capValOld, b)
 		if newPerm == oldPerm {
 			continue
 		}
@@ -427,8 +452,13 @@ func (User) Update(ctx context.Context, req infer.UpdateRequest[UserArgs, UserSt
 				p.GetLogger(ctx).Errorf("ERROR: Unknown cap while looking up %s => %s on user %s\n", cap.Type, cap.Perm, user.ID)
 				continue
 			}
-			ncv.Field(idx).SetString(cap.Perm)
-			// nc.Buckets = "*a"
+			f := ncv.Field(idx)
+			if f.IsNil() {
+				cp := CapabilityPermission(cap.Perm)
+				f.Set(reflect.ValueOf(&cp))
+			} else {
+				f.Elem().SetString(cap.Perm)
+			}
 		}
 		ret.Capabilities = &nc
 	}
