@@ -383,3 +383,12 @@ func iftfden[T interface{}](cond bool, trueFunc func() T) *T {
 		return nil
 	}
 }
+
+func hasReplaceDiff(diff map[string]p.PropertyDiff) bool {
+	for _, d := range diff {
+		if d.Kind == p.UpdateReplace {
+			return true
+		}
+	}
+	return false
+}

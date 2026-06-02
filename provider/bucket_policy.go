@@ -107,7 +107,7 @@ func (BucketPolicy) Diff(ctx context.Context, req infer.DiffRequest[BucketPolicy
 		fmt.Printf("DIFF on BucketPolicy %s/%s: Found %d diffs: %v", req.Inputs.Bucket, req.ID, len(diff), diff)
 	}
 	return infer.DiffResponse{
-		DeleteBeforeReplace: true,
+		DeleteBeforeReplace: hasReplaceDiff(diff),
 		HasChanges:          len(diff) > 0,
 		DetailedDiff:        diff,
 	}, nil

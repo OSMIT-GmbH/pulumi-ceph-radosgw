@@ -167,7 +167,7 @@ func (Key) Diff(ctx context.Context, req infer.DiffRequest[KeyArgs, KeyState]) (
 		p.GetLogger(ctx).Infof("DIFF on Key %s: Found %d diffs: %v", req.ID, len(diff), diff)
 	}
 	return infer.DiffResponse{
-		DeleteBeforeReplace: true,
+		DeleteBeforeReplace: hasReplaceDiff(diff),
 		HasChanges:          len(diff) > 0,
 		DetailedDiff:        diff,
 	}, nil

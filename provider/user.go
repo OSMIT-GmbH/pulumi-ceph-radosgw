@@ -355,7 +355,7 @@ func (User) Diff(ctx context.Context, req infer.DiffRequest[UserArgs, UserState]
 		p.GetLogger(ctx).Infof("DIFF on User %s/%s: Found %d diffs: %v\n", req.Inputs.UserID, req.ID, len(diff), diff)
 	}
 	return infer.DiffResponse{
-		DeleteBeforeReplace: true,
+		DeleteBeforeReplace: hasReplaceDiff(diff),
 		HasChanges:          len(diff) > 0,
 		DetailedDiff:        diff,
 	}, nil

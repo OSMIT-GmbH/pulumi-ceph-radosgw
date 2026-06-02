@@ -142,12 +142,12 @@ func (Bucket) Diff(ctx context.Context, req infer.DiffRequest[BucketArgs, Bucket
 	if req.Inputs.ObjectLocking != req.State.ObjectLocking {
 		diff["objectLocking"] = p.PropertyDiff{Kind: p.UpdateReplace}
 	}
-	// if news.DisplayName != olds.DisplayName {
-	// 	diff["displayName"] = p.PropertyDiff{Kind: p.Update}
-	// }
-	// if news.Email != olds.Email {
-	// 	diff["email"] = p.PropertyDiff{Kind: p.Update}
-	// }
+	if req.Inputs.Versioning != req.State.Versioning {
+		diff["versioning"] = p.PropertyDiff{Kind: p.Update}
+	}
+	if req.Inputs.PurgeOnDelete != req.State.PurgeOnDelete {
+		diff["purgeOnDelete"] = p.PropertyDiff{Kind: p.Update}
+	}
 	if (req.State.Quota.Enabled == nil) && (req.Inputs.Quota.Enabled == nil) {
 		// noop
 	} else if (req.State.Quota.Enabled == nil) && (req.Inputs.Quota.Enabled != nil) {
@@ -199,7 +199,7 @@ func (Bucket) Diff(ctx context.Context, req infer.DiffRequest[BucketArgs, Bucket
 		p.GetLogger(ctx).Infof("DIFF on Bucket %s/%s: Found %d diffs: %v\n", req.Inputs.Name, req.ID, len(diff), diff)
 	}
 	return infer.DiffResponse{
-		DeleteBeforeReplace: true,
+		DeleteBeforeReplace: hasReplaceDiff(diff),
 		HasChanges:          len(diff) > 0,
 		DetailedDiff:        diff,
 	}, nil
