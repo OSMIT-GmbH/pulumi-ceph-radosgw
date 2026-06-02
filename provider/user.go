@@ -389,9 +389,12 @@ func (User) Read(ctx context.Context, req infer.ReadRequest[UserArgs, UserState]
 func (User) Update(ctx context.Context, req infer.UpdateRequest[UserArgs, UserState]) (infer.UpdateResponse[UserState], error) {
 	// bail out now when we are in preview mode
 	if req.DryRun {
-		return infer.UpdateResponse[UserState]{
-			Output: UserState{UserArgs: req.Inputs, Assimilated: req.State.Assimilated},
-		}, nil
+		out := UserState{
+			UserArgs:    req.Inputs,
+			Keys:        req.State.Keys,
+			Assimilated: req.State.Assimilated,
+		}
+		return infer.UpdateResponse[UserState]{Output: out}, nil
 	}
 	ce, _, err := initClient(ctx)
 	if err != nil {

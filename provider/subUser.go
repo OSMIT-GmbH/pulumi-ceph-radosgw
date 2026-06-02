@@ -289,7 +289,13 @@ func (SubUser) Update(ctx context.Context, req infer.UpdateRequest[SubUserArgs, 
 	// bail out now when we are in preview mode
 	if req.DryRun {
 		fullName := fmt.Sprintf("%s:%s", req.Inputs.UserID, req.Inputs.SubUserName)
-		return infer.UpdateResponse[SubUserState]{Output: SubUserState{SubUserArgs: req.Inputs, FullName: fullName, Assimilated: req.State.Assimilated}}, nil
+		out := SubUserState{
+			SubUserArgs: req.Inputs,
+			FullName:    fullName,
+			Keys:        req.State.Keys,
+			Assimilated: req.State.Assimilated,
+		}
+		return infer.UpdateResponse[SubUserState]{Output: out}, nil
 	}
 	ce, _, err := initClient(ctx)
 	if err != nil {
